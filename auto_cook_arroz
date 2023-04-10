@@ -281,7 +281,7 @@ end
 
 function powershell(message)
 local script = [[
-$webHookUrl = 'https://discord.com/api/webhooks/1094814036329246781/VHfrWtPYxzqPUCWsOGPqeWJjxk-9oIxTav_54Gz_iwSQah89dw5mIMyvnk1td_9TdzUg'
+$webHookUrl = ']]..CONFIG.webhook_url..[['
  
 $host.ui.RawUI.WindowTitle = ""
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -369,6 +369,13 @@ pshell("Auto Arroz By Grow Script Community Starting")
 
 while true do
     if cek_waktu() then
+        if GetWorld().name ~= string.upper(CONFIG.world_cook) then
+            pshell("world cooking is invalid")
+            Sleep(1000)
+            pshell("trying to get to the world destination")
+            RequestJoinWorld(CONFIG.world_cook) 
+            Sleep(5000)
+        end
         if findItem(962) > 29 then
     	if findItem(4568) < 30 then
     	SChat("`1Grind Salt")
