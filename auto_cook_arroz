@@ -18,7 +18,7 @@ function punch(x,y)
     pkt.py = math.floor(GetLocal().pos.y / 32 + y)
     SendPacketRaw(false,pkt)
 end
-local function findItem(id)
+function findItem(id)
     for _, itm in pairs(GetInventory()) do
         if itm.id == id then
             return itm.amount
@@ -162,6 +162,10 @@ end)
 
 function plantfoliage()
     while findItem(4602) < 30 do
+        while findItem(1778) < 25 do
+            SendPacket(2,"action|buy\nitem|buy_deluxegspray")
+            Sleep(100)
+        end
         while findItem(455) < 1 do
             SendPacket(2, "action|dialog_return\ndialog_name|item_search\n454|0\n455|1")
             Sleep(1000)
@@ -255,6 +259,26 @@ function cekarroz()
     end
 end
 
+function growscan(id)
+    local i = 0
+    for _, obj in pairs(GetObjectList()) do
+        if obj.id == id then
+            i = i+obj.amount
+        end
+    end
+    return i 
+end
+
+function fossil(id)
+    local i = 0
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == id then
+            i = i+1
+        end
+    end
+    return i 
+end
+
 function powershell(message)
 local script = [[
 $webHookUrl = 'https://discord.com/api/webhooks/1094814036329246781/VHfrWtPYxzqPUCWsOGPqeWJjxk-9oIxTav_54Gz_iwSQah89dw5mIMyvnk1td_9TdzUg'
@@ -294,7 +318,7 @@ local pipe = io.popen("powershell -command -", "w")
   pipe:close()
 end
  
-thumbnail = "https://cdn.discordapp.com/attachments/1066350268524019805/1066352691598610493/QXBp.png" --Thumbnail url
+thumbnail = "https://cdn.discordapp.com/attachments/1094814006574842007/1094922525676417116/20230405_120945.png" --Thumbnail url
 warna = "3333333" --Colour embed
 
 function formatNumber(n)
@@ -311,9 +335,31 @@ powershell([[
 
 <a:gem:1094899616245362728> Gems:   ]]..formatNumber(GetPlayerInfo().gems)..[[
 
+<a:clipboard:1094900568713068545> Task: ]]..txt..[[
+
+===============================
+**Backpack Information**
 <a:baggage_claim:1094899616245362728> Backpack: ]]..GetPlayerInfo().backpack.size..[[
 
-<a:clipboard:1094900568713068545> Task: ]]..txt..[[
+<a:tomato:1094906775590928454> Tomato: ]]..findItem(962)..[[
+
+<a:onion:1094907355143094292> Onion: ]]..findItem(4602)..[[
+
+<a:salt:1094907614070054922> Salt: ]]..findItem(4568)..[[
+
+<a:bell_pepper:1094907939745185933> Pepper: ]]..findItem(4570)..[[
+
+<a:chicken:1094908143991013488> Chicken: ]]..findItem(4588)..[[
+
+<a:curry:1094921417176395857> Arroz: ]]..findItem(4604)..[[
+
+===============================
+**World Information**
+<a:globe_with_meridians:1094899616245362728> World Name:    ]]..string.upper(GetWorld().name)..[[
+
+<a:curry:1094921417176395857> Droped Arroz: ]]..growscan(4604)..[[
+
+<a:rock:1094923658083975248> Fossil: ]]..fossil(3918)..[[
 
 ===============================
 **PC Information**]])
@@ -326,7 +372,8 @@ while true do
         if findItem(962) > 29 then
     	if findItem(4568) < 30 then
     	SChat("`1Grind Salt")
-    	pshell("Grinding Salt")
+    	pshell("Salt less than 60 do Grind Pepper")
+    	Sleep(2000)
         while findItem(4568) < 30 do
     		awalsalt =  findItem(4568)
             findgrinder()
@@ -336,14 +383,10 @@ while true do
             if findItem(4566) > 200 then
                 SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4566|\namount|2")
     			Sleep(1000)
-    			SChat("`2Grind "..findItem(4568)-awalsalt.." Salt")
-    			LogToConsole("`1[GSC] `2Found  "..findItem(4568).." Salt")
     			Sleep(2000)
         elseif findItem(4566) > 100 then
                 SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4566|\namount|1")
     			Sleep(1000)
-    			SChat("`2Grind "..findItem(4568)-awalsalt.." Salt")
-    			LogToConsole("`1[GSC] `2Found  "..findItem(4568).." Salt")
     			Sleep(2000)
             end
         end
@@ -357,6 +400,7 @@ while true do
     if findItem(4570) < 60 then
         SChat("`1Grind Pepper")
         pshell("Pepper less than 60 do Grind Pepper")
+        Sleep(2000)
         while findItem(4570) < 60 do
     		awalpepper = findItem(4570)
             findgrinder()
@@ -366,14 +410,10 @@ while true do
             if findItem(4584) > 200 then
                 SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4584|\namount|2")
     			Sleep(1000)
-    			SChat("`2Grind "..findItem(4570)-awalpepper.." Pepper")
-    			LogToConsole("`1[GSC] `2Found "..findItem(4570).." Pepper")
     			Sleep(2000)
         elseif findItem(4584) > 100 then
                 SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4584|\namount|1")
     			Sleep(1000)
-    			SChat("`2Grind "..findItem(4570)-awalpepper.." Pepper")
-    			LogToConsole("`1[GSC] `2Found "..findItem(4570).." Pepper")
     			Sleep(2000)
             end
         end
@@ -389,7 +429,7 @@ while true do
             Sleep(1000)
         end
         while findItem(4588) < 60 do
-            SChat("`1Need Chicken")
+            pshell("Cutting Chicken")
             if GetLocal().isleft then
                 findcuttingkanan()
                 SendPacket(2, "action|dialog_return\ndialog_name|item_search\n872|1\n873|0\n4588|0\n4589|0\n5018|0\n5019|0\n5022|0\n5023|0\n8482|0\n8483|0")
@@ -420,18 +460,18 @@ while true do
                 Sleep(1000)
             end
     end
-    SChat("`1Buying Spray")
+    pshell("Buying Spray")
     if findItem(1778) < 25 then
         while findItem(1778) < 25 do
             SendPacket(2,"action|buy\nitem|buy_deluxegspray")
             Sleep(100)
         end
     end
-    SChat("`1Splice Onion")
+    pshell("Splice Onion")
     plantfoliage()
     Sleep(2000)
     cekarroz()
-    SChat("`1Cooking Time")
+    pshell("Start Cooking Arroz")
     arroz = findItem(4604)
     rice() --9000
     Sleep(24700)
@@ -445,12 +485,11 @@ while true do
     ambil()
     Sleep(1000)
     SChat("`2Get "..findItem(4604) - arroz.." arroz")
-    LogToConsole("`1[GSC] `2Get "..findItem(4604) - arroz.." arroz")
+    pshell("Get "..findItem(4604) - arroz.." arroz")
     Sleep(1000)
     cekarroz()
     else 
-    SChat("`4YOU DON'T HAVE ENOUGH TOMATO")
-    pshell("Don't Have Enough Tomato")
+    pshell("Not Enough Tomato")
     while findItem(962) < 30 do
     Sleep(300)
     end
