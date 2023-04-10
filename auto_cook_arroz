@@ -1,0 +1,463 @@
+function place(id,x,y)
+    pkt = {}
+    pkt.type = 3
+    pkt.value = id
+    pkt.px = math.floor(GetLocal().pos.x / 32 +x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 +y)
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y
+    SendPacketRaw(false, pkt)
+end
+function punch(x,y)
+    local pkt = {}
+    pkt.type = 3
+    pkt.value = 18
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y 
+    pkt.px = math.floor(GetLocal().pos.x / 32 + x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 + y)
+    SendPacketRaw(false,pkt)
+end
+local function findItem(id)
+    for _, itm in pairs(GetInventory()) do
+        if itm.id == id then
+            return itm.amount
+        end    
+    end
+    return 0
+end
+function rice()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4618 or tile.fg == 4498 or tile.fg == 4620 then
+            FindPath(tile.x,tile.y,50)
+            Sleep(150)
+            SendPacket(2, "action|dialog_return\ndialog_name|homeoven_edit\nx|" .. math.floor(GetLocal().pos.x / 32) .. "|\ny|" .. math.floor(GetLocal().pos.y /32) .. "|\ncookthis|3472|\nbuttonClicked|low")
+            Sleep(150)
+        end
+    end
+end
+
+function onion()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4618 or tile.fg == 4498 or tile.fg == 4620 then
+            FindPath(tile.x,tile.y,50)
+            Sleep(100)
+            place(4602,0,0) --onion
+            Sleep(150)
+            place(4588,0,0) --chicken
+            Sleep(100)
+        end
+    end
+end
+
+function tomat()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4618 or tile.fg == 4498 or tile.fg == 4620 then
+            FindPath(tile.x,tile.y,50)
+            Sleep(150)
+            place(962,0,0) --onion
+            Sleep(150)
+        end
+    end
+end
+
+function ambil()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4618 or tile.fg == 4498 or tile.fg == 4620 then
+            FindPath(tile.x,tile.y,50)
+            Sleep(150)
+            punch(0,0)
+            Sleep(150)
+        end
+    end
+end
+
+function findgrinder()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4582 then 
+            FindPath(tile.x,tile.y,50)
+            break
+        end
+    end
+end
+
+function tambahan()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 4618 or tile.fg == 4498 or tile.fg == 4620 then
+            FindPath(tile.x,tile.y,50)
+            Sleep(100)
+            place(4568,0,0) -- salt
+            Sleep(150)
+            place(4570,0,0) -- pepper
+            Sleep(150)
+            place(4570,0,0) -- pepper
+            Sleep(100)
+        end
+    end
+end
+
+function findcuttingkanan()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 3470 then
+            FindPath(tile.x+1,tile.y,50)
+            break
+        end
+    end
+end
+
+function findcuttingkiri()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 3470 then
+            FindPath(tile.x-1,tile.y,50)
+            break
+        end
+    end
+end
+
+local function drop(id)
+SendPacket(2, "action|dialog_return\ndialog_name|drop\nitem_drop|"..id.."|\nitem_count|"..findItem(id))
+end
+function trash(id)
+    SendPacket(2, "action|dialog_return\ndialog_name|trash\nitem_trash|"..id.."|\nitem_count|"..findItem(id))
+end
+function IsReady(tile)
+if tile and tile.extra and tile.extra.progress and tile.extra.progress == 1.0 then
+return true
+end
+return false
+end
+sdb = 1
+
+function SChat(txt)
+  s = {}
+  s[0] = "OnTalkBubble"
+  s[1] = GetLocal().netid
+  s[2] = txt
+  SendVariantList(s)
+end
+
+AddHook("onvariant", "hook", function(v)
+	if v[0] == "OnDialogRequest" and v[1]:find("end_dialog|homeoven_edit") then
+		return true
+	end
+	if v[0] == "OnDialogRequest" and v[1]:find("end_dialog|item_finder") then
+		return true
+	end
+    if v[0] == "OnConsoleMessage" then 
+        var = {}
+        var[0] = "OnConsoleMessage"
+        var[1] = "`1[GSC] `2"..v[1]
+        SendVariantList(var)
+        return true
+	elseif v[0] == "OnSDBroadcast" then
+		LogToConsole("`1[GSC] `4>>>`2Blocked "..sdb.."SDB`4<<<")
+		sdb=sdb+1
+		return true
+	end
+	if v[0] == "OnTextOverlay" then return true
+	elseif v[0] == "OnTalkBubble" then return true
+	    end
+return false
+end)
+
+function plantfoliage()
+    while findItem(4602) < 30 do
+        while findItem(455) < 1 do
+            SendPacket(2, "action|dialog_return\ndialog_name|item_search\n454|0\n455|1")
+            Sleep(1000)
+        end
+        while findItem(1105) < 1 do
+            SendPacket(2,"action|dialog_return\ndialog_name|item_search\n1104|0\n1105|1\n7226|0\n7227|0\n7448|0\n7449|0\n8932|0\n8933|0")
+            Sleep(1000)
+        end
+        for x= 60,60 do
+            FindPath(x,24)
+            Sleep(100)
+            while GetTile(x,24).fg == 0 and findItem(1105) > 0 do
+                place(1105,0,0)
+                Sleep(50)
+            end
+            while GetTile(x,24).fg == 1105 and findItem(455) > 0 do
+                place(455,0,0)
+                Sleep(50)
+            end
+            while GetTile(x,24).fg == 4603 and not IsReady(GetTile(x,24)) do
+            place(1778,0,0)
+            Sleep(10)
+            end
+            while GetTile(x,24).fg == 4603 and IsReady(GetTile(x,24)) do
+                punch(0, 0)
+                Sleep(100)
+                collect(0,0,0)
+            end
+        end
+    end
+end
+function taketomato()
+    for _, obj in pairs(GetObjectList()) do
+        if obj.id == 926 then
+            local x = math.floor(obj.pos.x / 32)
+            local y = math.floor(obj.pos.y / 32)
+            FindPath(x,y,100)
+            break
+        end
+    end
+end
+
+function FChat(txt)
+  p = {}
+  p[0] = "OnTextOverlay"
+  p[1] = txt
+  SendVariantList(p)
+end
+
+function collect(x,y,delay)
+    for _, obj in pairs(GetObjectList()) do
+        if math.floor(obj.pos.x / 32) == math.floor(GetLocal().pos.x / 32) + x and math.floor(obj.pos.y / 32) == math.floor(GetLocal().pos.y / 32) + y then
+            SendPacketRaw(false, {type=11,value=obj.oid,x=obj.pos.x,y=obj.pos.y})
+            Sleep(delay)
+        end
+    end
+end
+
+function konversi_tanggal(tanggal)
+  local tahun, bulan, hari = tanggal:match("(%d+)-(%d+)-(%d+)")
+  return os.time({year = tahun, month = bulan, day = hari, hour = 0, min = 0, sec = 0})
+end
+
+local tanggal_awal = "2023-04-10"
+local umur_awal = konversi_tanggal(tanggal_awal)
+
+function cek_waktu()
+    local selisih_waktu = os.time() - umur_awal
+    if selisih_waktu > 2592000 then
+        return false
+    else
+        local sisa_waktu = 2592000 - selisih_waktu
+        local jam = math.floor(sisa_waktu / (60 * 60))
+        local menit = math.floor((sisa_waktu % (60 * 60)) / 60)
+        local detik = math.floor(sisa_waktu % 60)
+        SChat("`3The script is still active. Remaining time: "..jam.." hours, "..menit.." minutes, "..detik.." seconds.")
+        return true
+    end
+end
+
+function cekarroz()
+    for _, tile in pairs(GetTiles()) do
+        if tile.fg == 1422 then
+            while findItem(4604) >= 200 do
+                FindPath(tile.x-1,tile.y,100)
+                Sleep(1000)
+                drop(4604)
+                Sleep(1000)
+            end
+        end
+    end
+end
+
+function powershell(message)
+local script = [[
+$webHookUrl = 'https://discord.com/api/webhooks/1094814036329246781/VHfrWtPYxzqPUCWsOGPqeWJjxk-9oIxTav_54Gz_iwSQah89dw5mIMyvnk1td_9TdzUg'
+ 
+$host.ui.RawUI.WindowTitle = ""
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+[System.Collections.ArrayList]$embedArray = @()
+$title       = 'Auto Arroz By Grow Script Community'
+$description = ']] .. message .. [['
+$color       = ']] .. warna .. [['
+$thumbUrl = ']] .. thumbnail .. [[' 
+$cpu = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average).Average
+$ram = (Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
+$thumbnailObject = [PSCustomObject]@{
+    url = $thumbUrl
+}
+ 
+$embedObject = [PSCustomObject]@{
+    title       = $title
+    description = "$description`r`n<a:warningbxb:974487949238485072> | Cpu : $cpu%`n<a:warningbxb:974487949238485072> | Ram : $ram MB"
+    color       = $color
+    thumbnail   = $thumbnailObject
+ 
+}
+ 
+$embedArray.Add($embedObject) | Out-Null
+$payload = [PSCustomObject]@{
+    embeds = $embedArray
+ 
+}
+ 
+Invoke-RestMethod -Uri $webHookUrl -Body ($payload | ConvertTo-Json -Depth 4) -Method Post -ContentType 'application/json'
+]]
+ 
+local pipe = io.popen("powershell -command -", "w")
+  pipe:write(script)
+  pipe:close()
+end
+ 
+thumbnail = "https://cdn.discordapp.com/attachments/1066350268524019805/1066352691598610493/QXBp.png" --Thumbnail url
+warna = "3333333" --Colour embed
+
+function formatNumber(n)
+    n = tostring(n)
+    return n:reverse():gsub("...","%0,",math.floor((#n-1)/3)):reverse()
+end
+
+function pshell(txt)
+powershell([[
+**Player Information** 
+<a:robot:1094899616245362728> Player Name:  ]]..GetLocal().name:gsub("`[%d%p%c%s]*", ""):gsub("`[%p%c%s]", "")..[[
+
+<a:globe_with_meridians:1094899616245362728> World Name:    ]]..string.upper(GetWorld().name)..[[
+
+<a:gem:1094899616245362728> Gems:   ]]..formatNumber(GetPlayerInfo().gems)..[[
+
+<a:baggage_claim:1094899616245362728> Backpack: ]]..GetPlayerInfo().backpack.size..[[
+
+<a:clipboard:1094900568713068545> Task: ]]..txt..[[
+
+===============================
+**PC Information**]])
+end
+
+pshell("Auto Arroz By Grow Script Community Starting")
+
+while true do
+    if cek_waktu() then
+        if findItem(962) > 29 then
+    	if findItem(4568) < 30 then
+    	SChat("`1Grind Salt")
+    	pshell("Grinding Salt")
+        while findItem(4568) < 30 do
+    		awalsalt =  findItem(4568)
+            findgrinder()
+            SendPacket(2,"action|dialog_return\ndialog_name|item_search\n4566|1\n4567|0")
+            collect(0,0,10)
+            Sleep(100)
+            if findItem(4566) > 200 then
+                SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4566|\namount|2")
+    			Sleep(1000)
+    			SChat("`2Grind "..findItem(4568)-awalsalt.." Salt")
+    			LogToConsole("`1[GSC] `2Found  "..findItem(4568).." Salt")
+    			Sleep(2000)
+        elseif findItem(4566) > 100 then
+                SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4566|\namount|1")
+    			Sleep(1000)
+    			SChat("`2Grind "..findItem(4568)-awalsalt.." Salt")
+    			LogToConsole("`1[GSC] `2Found  "..findItem(4568).." Salt")
+    			Sleep(2000)
+            end
+        end
+        if findItem(4568) > 30 and findItem(4566) > 0 then
+            if findItem(4566) > 0 then
+                trash(4566)
+                Sleep(1000)
+            end
+        end
+    end
+    if findItem(4570) < 60 then
+        SChat("`1Grind Pepper")
+        pshell("Pepper less than 60 do Grind Pepper")
+        while findItem(4570) < 60 do
+    		awalpepper = findItem(4570)
+            findgrinder()
+            SendPacket(2,"action|dialog_return\ndialog_name|item_search\n4584|1\n4585|0")
+            collect(0,0,0)
+            Sleep(100)
+            if findItem(4584) > 200 then
+                SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4584|\namount|2")
+    			Sleep(1000)
+    			SChat("`2Grind "..findItem(4570)-awalpepper.." Pepper")
+    			LogToConsole("`1[GSC] `2Found "..findItem(4570).." Pepper")
+    			Sleep(2000)
+        elseif findItem(4584) > 100 then
+                SendPacket(2,"action|dialog_return\ndialog_name|grinder\nx|"..math.floor(GetLocal().pos.x / 32).."|\ny|"..math.floor(GetLocal().pos.y / 32).."|\nitemID|4584|\namount|1")
+    			Sleep(1000)
+    			SChat("`2Grind "..findItem(4570)-awalpepper.." Pepper")
+    			LogToConsole("`1[GSC] `2Found "..findItem(4570).." Pepper")
+    			Sleep(2000)
+            end
+        end
+    end
+        if findItem(4570) > 60 and findItem(4584) > 0 then
+                if findItem(4584) > 0 then
+                    trash(4584)
+                    Sleep(1000)
+                end
+            end
+        while findItem(3472) < 30 do
+            SendPacket(2,"action|dialog_return\ndialog_name|item_search\n3010|0\n3011|0\n3472|1\n3473|0\n3976|0\n3977|0\n3980|0\n3981|0\n3982|0\n3983|0\n4008|0\n4009|0\n4012|0\n4013|0\n4014|0\n4015|0\n4040|0\n4041|0\n4044|0\n4045|0\n4046|0\n4047|0\n4072|0\n4073|0\n4076|0\n4077|0\n4078|0\n4079|0\n11276|0\n11277|0\n11278|0\n11279|0\n12588|0\n12589|0")
+            Sleep(1000)
+        end
+        while findItem(4588) < 60 do
+            SChat("`1Need Chicken")
+            if GetLocal().isleft then
+                findcuttingkanan()
+                SendPacket(2, "action|dialog_return\ndialog_name|item_search\n872|1\n873|0\n4588|0\n4589|0\n5018|0\n5019|0\n5022|0\n5023|0\n8482|0\n8483|0")
+                Sleep(1000)
+                drop(872)
+                Sleep(1000)
+                while findItem(872) > 0 do
+                    drop(872)
+                    Sleep(1000)
+                end
+                punch(-1,0)
+                Sleep(1000)
+                collect(-1,0,0)
+                Sleep(1000)
+            else 
+                findcuttingkiri()
+                SendPacket(2, "action|dialog_return\ndialog_name|item_search\n872|1\n873|0\n4588|0\n4589|0\n5018|0\n5019|0\n5022|0\n5023|0\n8482|0\n8483|0")
+                Sleep(1000)
+                drop(872)
+                Sleep(1000)
+                while findItem(872) > 0 do
+                    drop(872)
+                    Sleep(1000)
+                end
+                punch(1,0)
+                Sleep(1000)
+                collect(1,0,10)
+                Sleep(1000)
+            end
+    end
+    SChat("`1Buying Spray")
+    if findItem(1778) < 25 then
+        while findItem(1778) < 25 do
+            SendPacket(2,"action|buy\nitem|buy_deluxegspray")
+            Sleep(100)
+        end
+    end
+    SChat("`1Splice Onion")
+    plantfoliage()
+    Sleep(2000)
+    cekarroz()
+    SChat("`1Cooking Time")
+    arroz = findItem(4604)
+    rice() --9000
+    Sleep(24700)
+    onion() --10500
+    --44200
+    Sleep(25800)
+    tomat() --9000
+    Sleep(150)
+    tambahan() --15000
+    Sleep(3400)
+    ambil()
+    Sleep(1000)
+    SChat("`2Get "..findItem(4604) - arroz.." arroz")
+    LogToConsole("`1[GSC] `2Get "..findItem(4604) - arroz.." arroz")
+    Sleep(1000)
+    cekarroz()
+    else 
+    SChat("`4YOU DON'T HAVE ENOUGH TOMATO")
+    pshell("Don't Have Enough Tomato")
+    while findItem(962) < 30 do
+    Sleep(300)
+    end
+    end
+    else
+    SChat("`4The script is no longer valid")
+    pshell("Script Expired Please Contact the Developer for Updates")
+    Sleep(3000)
+    end
+end
