@@ -229,7 +229,7 @@ function konversi_tanggal(tanggal)
   return os.time({year = tahun, month = bulan, day = hari, hour = 0, min = 0, sec = 0})
 end
 
-local tanggal_awal = "2023-04-10"
+local tanggal_awal = "2023-04-12"
 local umur_awal = konversi_tanggal(tanggal_awal)
 
 function cek_waktu()
