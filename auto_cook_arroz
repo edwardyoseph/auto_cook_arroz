@@ -326,6 +326,13 @@ function formatNumber(n)
     return n:reverse():gsub("...","%0,",math.floor((#n-1)/3)):reverse()
 end
 
+local start_time = os.time()
+function get_uptime()
+  local current_time = os.time()
+  local uptime = os.difftime(current_time, start_time)
+  return uptime
+end
+
 function pshell(txt)
 powershell([[
 **Player Information** 
@@ -360,6 +367,10 @@ powershell([[
 <a:curry:1094921417176395857> Droped Arroz: ]]..growscan(4604)..[[
 
 <a:rock:1094923658083975248> Fossil: ]]..fossil(3918)..[[
+
+===============================
+**UPTIME**
+<a:alarm_clock:1095487036170977421> Uptime: ]].. format_time(get_uptime())..[[
 
 ===============================
 **PC Information**]])
