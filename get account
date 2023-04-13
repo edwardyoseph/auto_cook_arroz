@@ -1,6 +1,12 @@
+function log(txt)
+    local f = io.open("Account.txt", "a+")
+    f:write(txt.."\n")
+    f:close()
+end
+
 AddHook("onvariant", "id", function(v)
     if v[0]:find("SetHasGrowID") then
-        print(v[2])
-        print(v[3])
+        log("\""..v[2].."\"")
+        log("\""..v[3].."\"")
     end
 end)
