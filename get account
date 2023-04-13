@@ -1,0 +1,6 @@
+AddHook("onvariant", "id", function(v)
+    if v[0]:find("SetHasGrowID") then
+        print(v[2])
+        print(v[3])
+    end
+end)
