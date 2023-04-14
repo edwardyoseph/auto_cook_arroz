@@ -3,6 +3,7 @@ AddHook("onprocesstankupdatepacket", "rp", function(packet)
     return true 
     end
 end)
+
 AddHook("onvariant", "hook", function(var)
 if var[0] == "OnSDBroadcast" then
 return true
