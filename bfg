@@ -15,6 +15,7 @@ dialog_name|cheats
 check_autofarm|1
 check_bfg|1
 ]])
+return true
 elseif var[0] == "OnConsoleMessage" and var[1]:find("!stop") then
 SendPacket(2, [[
 action|dialog_return
@@ -22,6 +23,7 @@ dialog_name|cheats
 check_autofarm|0
 check_bfg|0
 ]])
+return true
 end
 return false
 end)
