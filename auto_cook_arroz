@@ -384,7 +384,7 @@ powershell([[
 **PC Information**]])
 end
 
-if CONFIG.disabble _webhook == true then
+if CONFIG.disabble_webhook == true then
      while true do
         if cek_waktu() then
             if GetWorld().name ~= string.upper(CONFIG.world_cook) then
