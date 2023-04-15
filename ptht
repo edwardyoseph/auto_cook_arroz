@@ -91,7 +91,7 @@ function cektree()
     if CheckEmptyTile() == 0 then
         Sleep(500)
         SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-        Sleep(2000)
+        Sleep(500)
         ht()
     elseif CheckEmptyTile() ~= 0 then
         plant()
