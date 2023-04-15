@@ -22,6 +22,10 @@ function punchs(x, y)
     Sleep(30)
 end
 
+function say(txt)
+SendPacket(2,"action|input\ntext|"..txt)
+end
+
 function IsReady(tile)
 if tile and tile.extra and tile.extra.progress and tile.extra.progress == 1.0 then
 return true
@@ -87,12 +91,61 @@ function place(id,x,y)
     SendPacketRaw(false, pkt)
 end
 
+function powershell(message)
+local script = [[
+$webHookUrl = ']]..CONFIG.Other_setting.webhook_url..[['
+ 
+$host.ui.RawUI.WindowTitle = ""
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+[System.Collections.ArrayList]$embedArray = @()
+$title       = 'PTHT By Grow Script Community'
+$description = ']] .. message .. [['
+$color       = ']] .. warna .. [['
+$thumbUrl = ']] .. thumbnail .. [[' 
+$cpu = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average).Average
+$ram = (Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
+$thumbnailObject = [PSCustomObject]@{
+    url = $thumbUrl
+}
+ 
+$embedObject = [PSCustomObject]@{
+    title       = $title
+    description = "$description`r`n<a:warningbxb:974487949238485072> | Cpu : $cpu%`n<a:warningbxb:974487949238485072> | Ram : $ram MB"
+    color       = $color
+    thumbnail   = $thumbnailObject
+ 
+}
+ 
+$embedArray.Add($embedObject) | Out-Null
+$payload = [PSCustomObject]@{
+    embeds = $embedArray
+ 
+}
+ 
+Invoke-RestMethod -Uri $webHookUrl -Body ($payload | ConvertTo-Json -Depth 4) -Method Post -ContentType 'application/json'
+]]
+ 
+local pipe = io.popen("powershell -command -", "w")
+  pipe:write(script)
+  pipe:close()
+end
+ 
+thumbnail = CONFIG.Other_setting.thumbnail_url --Thumbnail url
+warna = "3333333" --Colour embed
+
+
 function cektree()
     if CheckEmptyTile() == 0 then
-        Sleep(500)
+        Sleep(100)
         SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-        Sleep(500)
-        ht()
+        Sleep(100)
+        if CONFIG.Hand_setting.hand_id == 5480 then
+                hts()
+            elseif CONFIG.Hand_setting.hand_id == 13826 then
+                htmray()
+            else
+                ht()
+            end
     elseif CheckEmptyTile() ~= 0 then
         plant()
         Sleep(100)
@@ -127,6 +180,64 @@ function ht()
     end
 end
 
+function htmray()
+    if checkseed() > 0 then
+        if CONFIG.Hand_setting.harvest_type == "up" then
+            for x = 0, 199 do
+                for y = 0, 193 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punch(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+        elseif CONFIG.Hand_setting.harvest_type == "down" then
+            for x = 0, 199 do
+                for y = 193, 0, -1 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punch(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+        end
+    end
+end
+
+function hts()
+    if checkseed() > 0 then
+        if CONFIG.Hand_setting.harvest_type == "up" then
+            for y = 0, 193 do
+                for x = 0, 199 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punchs(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Empty Tile Left")
+        elseif CONFIG.Hand_setting.harvest_type == "down" then
+            for y = 193, 0, -1 do
+                for x = 0, 199 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punchs(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Empty Tile Left")
+        end
+    end
+end
+
 function plant()
    if checkseed() < 30000 then
        if CONFIG.Hand_setting.plant_type == "down" then
@@ -140,6 +251,7 @@ function plant()
                     end
                 end
             end
+        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
         elseif CONFIG.Hand_setting.plant_type == "up" then
             for y=0,193 do
                 for x=0, 199 do
@@ -165,10 +277,31 @@ mray_1hit|0]])
 end
 
 if CONFIG.Other_setting.repeat_world == true then
+    say("`1Script By Grow Script Community")
     while true do
         while checkseed() > 0 do
+            if CONFIG.Hand_setting.hand_id == 5480 then
+                hts()
+            elseif CONFIG.Hand_setting.hand_id == 13826 then
+                htmray()
+            else
+                ht()
+            end
+        end
+        plant()
+    end
+elseif CONFIG.Other_setting.repeat_world == false then
+    say("`1Script By Grow Script Community")
+    while checkseed() > 0 do
+        if CONFIG.Hand_setting.hand_id == 5480 then
+            hts()
+        elseif CONFIG.Hand_setting.hand_id == 13826 then
+            htmray()
+        else
             ht()
         end
+    end
+    while CheckEmptyTile() ~= 0 do
         plant()
     end
 end
