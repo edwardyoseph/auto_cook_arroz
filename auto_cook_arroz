@@ -140,12 +140,12 @@ function cektree()
         SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
         Sleep(100)
         if CONFIG.Hand_setting.hand_id == 5480 then
-                hts()
-            elseif CONFIG.Hand_setting.hand_id == 13826 then
-                htmray()
-            else
-                ht()
-            end
+            hts()
+        elseif CONFIG.Hand_setting.hand_id == 13826 then
+            htmray()
+        else
+            ht()
+        end
     elseif CheckEmptyTile() ~= 0 then
         plant()
         Sleep(100)
