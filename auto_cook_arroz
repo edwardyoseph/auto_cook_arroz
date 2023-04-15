@@ -384,8 +384,6 @@ powershell([[
 **PC Information**]])
 end
 
-pshell("Auto Arroz By Grow Script Community Starting")
-
 if CONFIG.disabble _webhook == true then
      while true do
         if cek_waktu() then
