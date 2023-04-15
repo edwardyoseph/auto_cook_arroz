@@ -289,6 +289,7 @@ if CONFIG.Other_setting.repeat_world == true then
         plant()
     end
 elseif CONFIG.Other_setting.repeat_world == false then
+    say("`1Script By Grow Script Community")
     while checkseed() > 0 do
         if CONFIG.Hand_setting.hand_id == 5480 then
             hts()
