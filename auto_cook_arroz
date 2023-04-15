@@ -233,6 +233,7 @@ function hts()
                     end
                 end
             end
+            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Empty Tile Left")
         end
     end
 end
@@ -250,6 +251,7 @@ function plant()
                     end
                 end
             end
+        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
         elseif CONFIG.Hand_setting.plant_type == "up" then
             for y=0,193 do
                 for x=0, 199 do
