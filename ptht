@@ -1,0 +1,191 @@
+CONFIG = {
+    Farm_setting = {
+        seed_id = 13593,
+        delay_plant = 1,
+        delay_harvest = 1 
+    },
+    Hand_setting = {
+        hand_id = 13826,
+        plant_type = "down",
+        harvest_type = "down"
+        },
+    Other_setting = {
+        repeat_world = true,
+        webhook_url = "https://discord.com/api/webhooks/1096764702345920512/E-lq5QW_3kX5W1RDQcWxXr_TNSQbgAruNCLMTWZiP9xMSpoa8aQlcsN4SSDJ8eQsgjAd",
+        disable_webhook = false
+    }
+}
+function punchs(x, y) 
+    pkt = {} 
+    pkt.px = math.floor(GetLocal().pos.x / 32 + x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 + y)
+    pkt.type = 3 
+    pkt.value = 18 
+    pkt.x = GetLocal().pos.x 
+    pkt.y = GetLocal().pos.y
+    SendPacketRaw(false, pkt)
+    state = {4196896,16779296}
+    for _, st in ipairs(state) do
+        hld = {} 
+        hld.px = x 
+        hld.py = y 
+        hld.type = 0 
+        hld.value = 0 
+        hld.x = GetLocal().pos.x
+        hld.y = GetLocal().pos.y 
+        hld.state = st
+        SendPacketRaw(false,hld)
+    end
+    Sleep(30)
+end
+
+function IsReady(tile)
+if tile and tile.extra and tile.extra.progress and tile.extra.progress == 1.0 then
+return true
+end
+return false
+end
+
+function checkseed()
+   local Ready = 0
+   for y = 0,193 do
+       for x = 0,199 do
+          if IsReady(GetTile(x,y)) then
+             Ready = Ready + 1
+          end
+       end
+    end
+   return Ready
+end
+
+function CheckEmptyTile()
+    local m=0
+    for y = 0,193 do
+        for x = 0, 199 do
+            if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable then
+            m = m + 1
+            end
+        end
+    end
+return m
+end
+
+function gscan(Id)
+    count = 0
+    for y = 0, 193 do
+        for x = 0, 199 do
+            if GetTile(x,y).fg == Id and IsReady(GetTile(x,y)) then
+            count = count + 1
+            end
+        end
+    end
+    return count
+end
+
+function punch(x,y)
+    local pkt = {}
+    pkt.type = 3
+    pkt.value = 18
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y 
+    pkt.px = math.floor(GetLocal().pos.x / 32 + x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 + y)
+    SendPacketRaw(false,pkt)
+end
+
+function place(id,x,y)
+    pkt = {}
+    pkt.type = 3
+    pkt.value = id
+    pkt.px = math.floor(GetLocal().pos.x / 32 +x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 +y)
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y
+    SendPacketRaw(false, pkt)
+end
+
+function cektree()
+    if CheckEmptyTile() == 0 then
+        Sleep(500)
+        SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+        Sleep(2000)
+        ht()
+    elseif CheckEmptyTile() ~= 0 then
+        plant()
+        Sleep(100)
+    end
+end
+    
+function ht()
+    if checkseed() > 0 then
+        if CONFIG.Hand_setting.harvest_type == "up" then
+            for y = 0, 193 do
+                for x = 0, 199 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punch(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+        elseif CONFIG.Hand_setting.harvest_type == "down" then
+            for y = 193, 0, -1 do
+                for x = 0, 199 do
+                    if IsReady(GetTile(x,y)) then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                        punch(0,0)
+                        Sleep(CONFIG.Farm_setting.delay_harvest)
+                    end
+                end
+            end
+        end
+    end
+end
+
+function plant()
+   if checkseed() < 30000 then
+       if CONFIG.Hand_setting.plant_type == "down" then
+            for y=193,0,-1 do   
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+        elseif CONFIG.Hand_setting.plant_type == "up" then
+            for y=0,193 do
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+        end
+        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+    end
+    cektree()
+end
+
+if CONFIG.Hand_setting.hand_id == 13826 then
+SendPacket(2,[[
+action|dialog_return
+dialog_name|info_box
+mray_1hit|0]])
+end
+
+if CONFIG.Other_setting.repeat_world == true then
+    while true do
+        while checkseed() > 0 do
+            ht()
+        end
+        plant()
+    end
+end
