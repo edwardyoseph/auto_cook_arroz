@@ -1,20 +1,3 @@
-CONFIG = {
-    Farm_setting = {
-        seed_id = 13593,
-        delay_plant = 1,
-        delay_harvest = 1 
-    },
-    Hand_setting = {
-        hand_id = 13826,
-        plant_type = "down",
-        harvest_type = "down"
-        },
-    Other_setting = {
-        repeat_world = true,
-        webhook_url = "https://discord.com/api/webhooks/1096764702345920512/E-lq5QW_3kX5W1RDQcWxXr_TNSQbgAruNCLMTWZiP9xMSpoa8aQlcsN4SSDJ8eQsgjAd",
-        disable_webhook = false
-    }
-}
 function punchs(x, y) 
     pkt = {} 
     pkt.px = math.floor(GetLocal().pos.x / 32 + x)
