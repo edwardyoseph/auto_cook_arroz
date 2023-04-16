@@ -1,29 +1,27 @@
-AddHook("onprocesstankupdatepacket", "rp", function(packet)
-    if packet.type == 17 or packet.type == 3 or packet.type == 8 then 
-    return true 
-    end
-end)
-
-AddHook("onvariant", "hook", function(var)
-if var[0] == "OnSDBroadcast" then
-return true
+function wrench(x,y)
+    pkt = {}
+    pkt.type = 3
+    pkt.value = 32
+    pkt.px = math.floor(GetLocal().pos.x / 32 +x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 +y)
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y
+    SendPacketRaw(false, pkt)
 end
-if var[0] == "OnConsoleMessage" and var[1]:find("!bfg") then
+
+FindPath(20,198,100)
+Sleep(1000)
+SendPacket(2,[[
+action|dialog_return
+dialog_name|magplant_edit
+x|]]..math.floor(GetLocal().pos.x /32)..[[|
+y|]]..math.floor(GetLocal().pos.y /32)+1 ..[[|
+buttonClicked|getRemote]])
+Sleep(1000)
+FindPath(37,195,100)
+Sleep(1000)
 SendPacket(2, [[
 action|dialog_return
 dialog_name|cheats
 check_autofarm|1
-check_bfg|1
-]])
-return true
-elseif var[0] == "OnConsoleMessage" and var[1]:find("!stop") then
-SendPacket(2, [[
-action|dialog_return
-dialog_name|cheats
-check_autofarm|0
-check_bfg|0
-]])
-return true
-end
-return false
-end)
+check_bfg|1]])
