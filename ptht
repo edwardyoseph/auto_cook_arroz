@@ -192,7 +192,13 @@ end
 function cektree()
     if CheckEmptyTile() == 0 then
         Sleep(100)
-        SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+        if CONFIG.pink_crystal == true then
+            while CONFIG.pink_crystal == true do
+                Sleep(10)
+            end
+        else
+            SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+        end
         Sleep(100)
         if CONFIG.Hand_setting.hand_id == 5480 then
             hts()
