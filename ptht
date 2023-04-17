@@ -320,6 +320,56 @@ function plant()
     cektree()
 end
 
+function getObject(id)
+    for _, obj in pairs(GetObjectList()) do
+        if obj.id == CONFIG.Farm_setting.seed_id then
+            x = math.floor(obj.pos.x /32)
+            y = math.floor(obj.pos.y /32)
+            FindPath(x,y,100)
+            Sleep(1000)
+            break
+        end
+    end
+end
+
+function plantcrystal()
+    if checkseed() < 30000 then
+       if CONFIG.Hand_setting.plant_type == "down" then
+            for y=193,0,-1 do   
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        if findItem(CONFIG.Farm_setting.seed_id) == 0 then
+                            getObject(CONFIG.Farm_setting.seed_id)
+                            Sleep(500)
+                        end
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(CONFIG.Farm_setting.seed_id,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+        elseif CONFIG.Hand_setting.plant_type == "up" then
+            for y=0,193 do
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        if findItem(CONFIG.Farm_setting.seed_id) == 0 then
+                            getObject(CONFIG.Farm_setting.seed_id)
+                            Sleep(500)
+                        end
+                        FindPath(x,y,100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(CONFIG.Farm_setting.seed_id,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+        end
+    end
+    cektree()
+end
+  
+
 if CONFIG.Hand_setting.hand_id == 13826 then
 SendPacket(2,[[
 action|dialog_return
@@ -344,7 +394,11 @@ if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_we
         end
         while CheckEmptyTile() ~= 0 do
             LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-            plant()
+            if CONFIG.pink_crystal == true then
+                plantcrystal()
+            else
+                plant()
+            end
         end
     end
 elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == true then
@@ -363,7 +417,11 @@ elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disab
     end
     while CheckEmptyTile() ~= 0 do
         LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-        plant()
+        if CONFIG.pink_crystal == true then
+            plantcrystal()
+        else
+            plant()
+        end
     end
 elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
     sendwebhook("Starting PTHT")
@@ -382,7 +440,11 @@ elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disabl
         end
         while CheckEmptyTile() ~= 0 do
             sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-            plant()
+            if CONFIG.pink_crystal == true then
+                plantcrystal()
+            else
+                plant()
+            end
         end
     end
 elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == false then
@@ -401,6 +463,10 @@ elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disab
     end
     while CheckEmptyTile() ~= 0 do
         sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-        plant()
+        if CONFIG.pink_crystal == true then
+            plantcrystal()
+        else
+            plant()
+        end
     end
 end
