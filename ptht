@@ -197,7 +197,7 @@ function cektree()
                 Sleep(10)
             end
         elseif CONFIG.disable_uws == true then
-            while CONFIG.disable_uws == true then
+            while CONFIG.disable_uws == true do
               Sleep(10)  
             end
         else
