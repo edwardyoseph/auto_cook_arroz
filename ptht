@@ -196,6 +196,10 @@ function cektree()
             while CONFIG.pink_crystal == true do
                 Sleep(10)
             end
+        elseif CONFIG.disabel_uws == true then
+            while CONFIG.disabel_uws == true then
+              Sleep(10)  
+            end
         else
             SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
         end
