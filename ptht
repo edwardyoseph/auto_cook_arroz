@@ -460,7 +460,11 @@ elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disab
         if CONFIG.pink_crystal == true then
             plantcrystal()
         else
-            plant()
+            if CONFIG.plant_mray == true then
+                plantmray()
+            else
+                plant()
+            end
         end
     end
 elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
@@ -483,7 +487,11 @@ elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disabl
             if CONFIG.pink_crystal == true then
                 plantcrystal()
             else
-                plant()
+                if CONFIG.plant_mray == true then
+                    plantmray()
+                else
+                    plant()
+                end
             end
         end
     end
@@ -506,7 +514,11 @@ elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disab
         if CONFIG.pink_crystal == true then
             plantcrystal()
         else
-            plant()
+            if CONFIG.plant_mray == true then
+                plantmray()
+            else
+                plant()
+            end
         end
     end
 end
