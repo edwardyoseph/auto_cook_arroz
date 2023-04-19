@@ -415,6 +415,12 @@ SendPacket(2,[[
 action|dialog_return
 dialog_name|info_box
 mray_1hit|0]])
+Sleep(1000)
+SendPacket(2, [[
+action|dialog_return
+dialog_name|cheats
+check_gems|1
+]])
 end
 cektree()
 
