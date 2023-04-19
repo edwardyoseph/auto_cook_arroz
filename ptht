@@ -253,7 +253,7 @@ function htmray()
     if checkseed() > 0 then
         if CONFIG.Hand_setting.harvest_type == "up" then
             for x = 0, 199 do
-                for y = 0, 193 do
+                for y = 0, 199 do
                     if IsReady(GetTile(x,y)) then
                         FindPath(x,y,100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -264,7 +264,7 @@ function htmray()
             end
         elseif CONFIG.Hand_setting.harvest_type == "down" then
             for x = 0, 199 do
-                for y = 193, 0, -1 do
+                for y = 199, 0, -1 do
                     if IsReady(GetTile(x,y)) then
                         FindPath(x,y,100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -408,7 +408,6 @@ function plantcrystal()
     end
     cektree()
 end
-  
 
 if CONFIG.Hand_setting.hand_id == 13826 then
 SendPacket(2,[[
