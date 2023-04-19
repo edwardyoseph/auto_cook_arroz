@@ -330,6 +330,32 @@ function plant()
     cektree()
 end
 
+function plantmray()
+    if checkseed() < 30000 then
+        for y=185,193 do
+            for x=0,199 do
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                    FindPath(x,y-2,100)
+                    Sleep(CONFIG.Farm_setting.delay_plant)
+                    place(5640,0,2)
+                    Sleep(CONFIG.Farm_setting.delay_plant)
+                end
+            end
+         end
+         for y=183,0,-1 do
+            for x=0, 199 do
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                    FindPath(x,y+2,100)
+                    Sleep(CONFIG.Farm_setting.delay_plant)
+                    place(5640,0,-2)
+                    Sleep(CONFIG.Farm_setting.delay_plant)
+                end
+            end
+        end
+    end
+     cektree()
+end
+
 function getObject(id)
     for _, obj in pairs(GetObjectList()) do
         if obj.id == CONFIG.Farm_setting.seed_id then
@@ -407,7 +433,11 @@ if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_we
             if CONFIG.pink_crystal == true then
                 plantcrystal()
             else
-                plant()
+                if CONFIG.plant_mray == true then
+                    plantmray()
+                else
+                    plant()
+                end
             end
         end
     end
