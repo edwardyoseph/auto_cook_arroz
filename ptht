@@ -203,7 +203,7 @@ function cektree()
         else
             SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
         end
-    elseif CheckEmptyTile() == 0 and not gscan(CONFIG.Farm_setting.seed_id) == 0 then
+    elseif gscan(CONFIG.Farm_setting.seed_id) > 0 then
         Sleep(100)
         if CONFIG.Hand_setting.hand_id == 5480 then
             hts()
