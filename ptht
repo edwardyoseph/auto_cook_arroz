@@ -554,11 +554,131 @@ dialog_name|cheats
 check_gems|1
 ]])
 end
-cektree()
 
-if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == true then
-    say("`1Script By Grow Script Community")
+function htprmray()
+    if checkseed() > 0 then
+        SendPacket(2,[[
+action|dialog_return
+dialog_name|info_box
+mray_1hit|0]])
+Sleep(100)
+        for y = 199, 0, -1 do
+            for x = 0, 199 do
+                if IsReady(GetTile(x,y)) then
+                    FindPath(x,y,100)
+                    Sleep(CONFIG.Farm_setting.delay_harvest)
+                    punch(0,0)
+                    Sleep(CONFIG.Farm_setting.delay_harvest)
+                end
+            end
+        end
+    end
+    SendPacket(2,[[
+action|dialog_return
+dialog_name|info_box
+mray_1hit|1]])
+    Sleep(2000)
+end
+
+function plantpr()
+    SendPacket(2,[[
+action|dialog_return
+dialog_name|info_box
+mray_1hit|0]])
+Sleep(100)
+    for y=193,0,-1 do
+        for x=0, 199 do
+            if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13655 then
+                FindPath(x,y,100)
+                Sleep(CONFIG.Farm_setting.delay_plant)
+                place(13655,0,0)
+                Sleep(CONFIG.Farm_setting.delay_plant)
+                if findItem(13655) == 0 then
+                    break
+                end
+            end
+        end
+    end
+    SendPacket(2,[[
+action|dialog_return
+dialog_name|info_box
+mray_1hit|1]])
+end
+
+if CONFIG.pink_crystal_rotation == true then
     while true do
+        if findItem(13654) > 0 then
+            FindPath(0,0,100)
+            Sleep(2000)
+            place(13654,1,0)
+            Sleep(1000)
+            SendPacket(2, [[
+    action|dialog_return
+    dialog_name|cheats
+    check_autofarm|1
+    checkantibounce|1
+    check_gems|1
+    ]])
+        elseif findItem(13654) == 0 then
+            Sleep(1000)
+            SendPacket(2, [[
+    action|dialog_return
+    dialog_name|cheats
+    check_autofarm|0
+    check_antibounce|1
+    check_gems|1
+    ]])
+            Sleep(2000)
+            getObject(13655) 
+            Sleep(1000)
+            plantpr()
+            Sleep(100)
+            htprmray()
+            Sleep(100)
+            getObject(13654) 
+            Sleep(100)
+        end
+        Sleep(1)
+    end
+else
+    cektree()
+    if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == true then
+        say("`1Script By Grow Script Community")
+        while true do
+            if CheckEmptyTile() == 0 then
+                cektree()
+            end
+            while checkseed() > 0 do
+                LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                if CONFIG.Hand_setting.hand_id == 5480 then
+                    LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    hts()
+                elseif CONFIG.Hand_setting.hand_id == 13826 then
+                    LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    htmray()
+                else
+                    LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    ht()
+                end
+            end
+            while CheckEmptyTile() ~= 0 do
+                LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+                if CONFIG.pink_crystal == true then
+                    LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+                    plantcrystal()
+                else
+                    if CONFIG.plant_mray == true then
+                        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+                        plantmray()
+                    else
+                        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+                        plant()
+                    end
+                end
+            end
+        end
+    elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == true then
+        say("`1Script By Grow Script Community")
         if CheckEmptyTile() == 0 then
             cektree()
         end
@@ -578,7 +698,6 @@ if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_we
         while CheckEmptyTile() ~= 0 do
             LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
             if CONFIG.pink_crystal == true then
-                LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
                 plantcrystal()
             else
                 if CONFIG.plant_mray == true then
@@ -590,42 +709,41 @@ if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_we
                 end
             end
         end
-    end
-elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == true then
-    say("`1Script By Grow Script Community")
-    if CheckEmptyTile() == 0 then
-        cektree()
-    end
-    while checkseed() > 0 do
-        LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-        if CONFIG.Hand_setting.hand_id == 5480 then
-            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            hts()
-        elseif CONFIG.Hand_setting.hand_id == 13826 then
-            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            htmray()
-        else
-            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            ht()
-        end
-    end
-    while CheckEmptyTile() ~= 0 do
-        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-        if CONFIG.pink_crystal == true then
-            plantcrystal()
-        else
-            if CONFIG.plant_mray == true then
-                LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-                plantmray()
-            else
-                LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-                plant()
+    elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
+        sendwebhook("Starting PTHT")
+        while true do
+            if CheckEmptyTile() == 0 then
+                cektree()
+            end
+            while checkseed() > 0 do
+                if CONFIG.Hand_setting.hand_id == 5480 then
+                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    hts()
+                elseif CONFIG.Hand_setting.hand_id == 13826 then
+                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    htmray()
+                else
+                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+                    ht()
+                end
+            end
+            while CheckEmptyTile() ~= 0 do
+                if CONFIG.pink_crystal == true then
+                    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
+                    plantcrystal()
+                else
+                    if CONFIG.plant_mray == true then
+                        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
+                        plantmray()
+                    else
+                        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
+                        plant()
+                    end
+                end
             end
         end
-    end
-elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
-    sendwebhook("Starting PTHT")
-    while true do
+    elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == false then
+        sendwebhook("Starting PTHT")
         if CheckEmptyTile() == 0 then
             cektree()
         end
@@ -653,37 +771,6 @@ elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disabl
                     sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                     plant()
                 end
-            end
-        end
-    end
-elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == false then
-    sendwebhook("Starting PTHT")
-    if CheckEmptyTile() == 0 then
-        cektree()
-    end
-    while checkseed() > 0 do
-        if CONFIG.Hand_setting.hand_id == 5480 then
-            sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            hts()
-        elseif CONFIG.Hand_setting.hand_id == 13826 then
-            sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            htmray()
-        else
-            sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
-            ht()
-        end
-    end
-    while CheckEmptyTile() ~= 0 do
-        if CONFIG.pink_crystal == true then
-            sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-            plantcrystal()
-        else
-            if CONFIG.plant_mray == true then
-                sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-                plantmray()
-            else
-                sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-                plant()
             end
         end
     end
