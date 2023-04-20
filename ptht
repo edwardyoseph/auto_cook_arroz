@@ -386,8 +386,8 @@ function plant()
                 end
             end
         end
+        cektree()
     end
-    cektree()
 end
 
 function plantmray()
@@ -465,8 +465,8 @@ function plantmray()
                 end
             end
         end
+        cektree()
     end
-    cektree()
 end
 
 function getObject(id)
@@ -538,8 +538,8 @@ function plantcrystal()
                 end
             end
         end
+        cektree()
     end
-    cektree()
 end
 
 if CONFIG.Hand_setting.hand_id == 13826 then
