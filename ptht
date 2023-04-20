@@ -559,6 +559,9 @@ cektree()
 if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == true then
     say("`1Script By Grow Script Community")
     while true do
+        if CheckEmptyTile() == 0 then
+            cektree()
+        end
         while checkseed() > 0 do
             LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
             if CONFIG.Hand_setting.hand_id == 5480 then
@@ -590,6 +593,9 @@ if CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_we
     end
 elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == true then
     say("`1Script By Grow Script Community")
+    if CheckEmptyTile() == 0 then
+        cektree()
+    end
     while checkseed() > 0 do
         LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
         if CONFIG.Hand_setting.hand_id == 5480 then
@@ -620,6 +626,9 @@ elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disab
 elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
     sendwebhook("Starting PTHT")
     while true do
+        if CheckEmptyTile() == 0 then
+            cektree()
+        end
         while checkseed() > 0 do
             if CONFIG.Hand_setting.hand_id == 5480 then
                 sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
@@ -649,6 +658,9 @@ elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disabl
     end
 elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == false then
     sendwebhook("Starting PTHT")
+    if CheckEmptyTile() == 0 then
+        cektree()
+    end
     while checkseed() > 0 do
         if CONFIG.Hand_setting.hand_id == 5480 then
             sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
