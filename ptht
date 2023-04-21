@@ -202,6 +202,7 @@ function cektree()
             end
         else
             SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+            Sleep(3000)
         end
     elseif gscan(CONFIG.Farm_setting.seed_id) > 0 then
         Sleep(100)
