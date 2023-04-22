@@ -14,7 +14,7 @@ function command()
     varlist_comamnd[0] = "OnDialogRequest"
     varlist_comamnd[1] = [[
 set_default_color|`o
-add_label_with_icon|big|`1Grow Script Community``|left|528
+add_label_with_icon|big|`1Grow Script Community``|left|528|
 add_spacer|small|
 add_label_with_icon|small|Command List|left|32|
 add_label_with_icon|small|`2/warp `1~warp to other world|left|
@@ -23,6 +23,8 @@ add_label_with_icon|small|`2/re `1~rejoin world|left|
 add_label_with_icon|small|`2/dw `1~drop wl|left|
 add_label_with_icon|small|`2/dd `1~drop dl|left|
 add_label_with_icon|small|`2/db `1~drop bgl|left|
+add_spacer|small|
+add_label_with_icon|small|`2real rake spin|left|758|
 add_quick_exit
 ]]
 SendVariantList(varlist_comamnd)
