@@ -41,23 +41,22 @@ function findItem(id)
 function printa(v)
     if v[0] == "OnConsoleMessage" and v[1]:find("Collected ") then
         if v[1]:find("Diamond Lock") then
-        play = tonumber(v[1]:match("(%d+) Diamond Lock")) * 100
-        countTax(play * 2)
-        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        play = tonumber(v[1]:match("(%d+) Diamond Lock"))
+        msg = "`0[`1GSC PROXY`0] " .. v[1]
         p = {}
         p[0] = "OnConsoleMessage"
         p[1] = msg
         SendVariantList(p)
         return true
         else
-        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        msg = "`0[`1GSC PROXY`0] " .. v[1]
         p = {}
         p[0] = "OnConsoleMessage"
         p[1] = msg
         SendVariantList(p)
         end
     elseif v[0] == "OnConsoleMessage" then
-        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        msg = "`0[`1GSC PROXY`0] " .. v[1]
         p = {}
         p[0] = "OnConsoleMessage"
         p[1] = msg
