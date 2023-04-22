@@ -1,0 +1,107 @@
+wl = 242
+dl = 1796
+bgl = 7188
+
+function wear(id)
+    pkt = {}
+    pkt.type = 10
+    pkt.value = id
+    SendPacketRaw(false, pkt)
+end
+
+function command()
+    varlist_comamnd = {}
+    varlist_comamnd[0] = "OnDialogRequest"
+    varlist_comamnd[1] = [[
+set_default_color|`o
+add_label_with_icon|big|`1Grow Script Community``|left|528
+add_spacer|small|
+add_label_with_icon|small|Command List|left|32|
+add_label_with_icon|small|`2/warp `1~warp to other world|left|
+add_label_with_icon|small|`2/rc `1~reconnect|left|
+add_label_with_icon|small|`2/re `1~rejoin world|left|
+add_label_with_icon|small|`2/dw `1~drop wl|left|
+add_label_with_icon|small|`2/dd `1~drop dl|left|
+add_label_with_icon|small|`2/db `1~drop bgl|left|
+add_quick_exit
+]]
+SendVariantList(varlist_comamnd)
+end
+
+function findItem(id)
+    for _, itm in pairs(GetInventory()) do
+      if itm.id == id then
+        return itm.amount
+      end
+    end
+    return 0
+  end
+function printa(v)
+    if v[0] == "OnConsoleMessage" and v[1]:find("Collected ") then
+        if v[1]:find("Diamond Lock") then
+        play = tonumber(v[1]:match("(%d+) Diamond Lock")) * 100
+        countTax(play * 2)
+        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        p = {}
+        p[0] = "OnConsoleMessage"
+        p[1] = msg
+        SendVariantList(p)
+        return true
+        else
+        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        p = {}
+        p[0] = "OnConsoleMessage"
+        p[1] = msg
+        SendVariantList(p)
+        end
+    elseif v[0] == "OnConsoleMessage" then
+        msg = "`0[`9GSC PROXY`0] " .. v[1]
+        p = {}
+        p[0] = "OnConsoleMessage"
+        p[1] = msg
+        SendVariantList(p)
+        return true
+    elseif v[0] == "OnTalkBubble" and v[2]:find("spun the wheel") then
+        p = {}
+        p[0] = "OnTalkBubble"
+        p[1] = v[1]
+        p[2] = "`0[`2REAL`0] " .. v[2]
+        p[3] = 0
+        p[4] = 0
+        SendVariantList(p)
+        return true
+    end
+    return false
+end
+
+AddHook("onvariant", 1, printa)
+  
+AddHook("onsendpacket", 0, function(type, pkt)
+    if pkt:find("/warp (%w+)") then
+        RequestJoinWorld(pkt:match("/warp (%w+)"))
+        return true
+    elseif pkt:find("/rc") then
+        SendPacket(3, "action|quit")
+        return true
+    elseif pkt:find("/proxy") then
+        RunThread(command)
+        return true
+    elseif pkt:match("/dw (%d+)") then
+        if findItem(wl) < tonumber(pkt:match("/dw (%d+)")) then
+            RunThread(wear(dl))
+        else
+            SendPacket(2,"action|dialog_return\ndialog_name|drop\nitem_drop|242|\nitem_count|"..tonumber(pkt:match("/dw (%d+)")))
+        end
+        return true
+    elseif pkt:match("/dd (%d+)") then
+        if findItem(dl) < tonumber(pkt:match("/dd (%d+)")) then
+            RunThread(wear(bgl))
+        else
+            SendPacket(2,"action|dialog_return\ndialog_name|drop\nitem_drop|1796|\nitem_count|"..tonumber(pkt:match("/dd (%d+)")))
+        end
+        return true
+    elseif pkt:match("/db (%d+)") then
+        SendPacket(2,"action|dialog_return\ndialog_name|drop\nitem_drop|7188|\nitem_count|"..tonumber(pkt:match("/db (%d+)")))
+        return true
+    end
+end)
