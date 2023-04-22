@@ -202,7 +202,6 @@ function cektree()
             end
         else
             SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-            Sleep(3000)
         end
     elseif gscan(CONFIG.Farm_setting.seed_id) > 0 then
         Sleep(100)
@@ -393,7 +392,7 @@ end
 
 function plantmray()
     if checkseed() < 30000 then
-        for y=183,193 do
+        for y=185,193 do
             for x=0,199 do
                 if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
                     FindPath(x,y-2,100)
@@ -411,7 +410,7 @@ function plantmray()
                 end
             end
         end
-        for y=183,0,-1 do
+        for y=185,0,-1 do
             for x=0, 199 do
                 if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
                     FindPath(x,y+2,100)
