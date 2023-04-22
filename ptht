@@ -543,7 +543,7 @@ function plantcrystal()
     end
 end
 
-if CONFIG.Hand_setting.hand_id == 13826 then
+if CONFIG.Hand_setting.hand_id == 13862 then
 SendPacket(2,[[
 action|dialog_return
 dialog_name|info_box
