@@ -326,46 +326,7 @@ function plant()
                     end
                 end
             end
-        elseif CONFIG.Hand_setting.plant_type == "up" then
-            for y=0,193 do
-                for x=0, 199 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-                for x=199, 0, -1 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-            end
-        end
-    else
-        if CONFIG.Hand_setting.plant_type == "down" then
-            for y=193,0,-1 do   
-                for x=0, 199 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-                for x=199, 0, -1 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-            end
+        cektree()
         elseif CONFIG.Hand_setting.plant_type == "up" then
             for y=0,193 do
                 for x=0, 199 do
