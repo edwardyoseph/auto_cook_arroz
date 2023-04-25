@@ -223,6 +223,7 @@ end
     
 function ht()
     if checkseed() > 0 then
+        sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
         if CONFIG.Hand_setting.harvest_type == "up" then
             for y = 0, 193 do
                 for x = 0, 199 do
@@ -251,6 +252,7 @@ end
 
 function htmray()
     if checkseed() > 0 then
+        sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
         if CONFIG.Hand_setting.harvest_type == "up" then
             for x = 0, 199 do
                 for y = 0, 199 do
@@ -279,6 +281,7 @@ end
 
 function hts()
     if checkseed() > 0 then
+        sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
         if CONFIG.Hand_setting.harvest_type == "up" then
             for y = 0, 193 do
                 for x = 0, 199 do
@@ -307,6 +310,7 @@ end
 
 function plant()
     if checkseed() < 30000 then
+        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
         if CONFIG.Hand_setting.plant_type == "down" then
             for y=193,0,-1 do   
                 for x=0, 199 do
@@ -353,43 +357,7 @@ end
 
 function plantmray()
     if checkseed() < 30000 then
-        for y=185,193 do
-            for x=0,199 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y-2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-            for x=199, 0, -1 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y-2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-        end
-        for y=185,0,-1 do
-            for x=0, 199 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y+2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,-2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-            for x=199, 0, -1 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y+2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,-2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-        end
-    else
+        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
         for y=183,193 do
             for x=0,199 do
                 if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
@@ -443,6 +411,7 @@ function getObject(id)
 end
 
 function plantcrystal()
+    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
     if checkseed() < 30000 then
        if CONFIG.Hand_setting.plant_type == "down" then
             for y=193,0,-1 do   
@@ -514,6 +483,14 @@ action|dialog_return
 dialog_name|cheats
 check_gems|1
 ]])
+else
+Sleep(1000)
+SendPacket(2, [[
+action|dialog_return
+dialog_name|cheats
+check_gems|1
+]])
+Sleep(1000)
 end
 
 function htprmray()
@@ -672,32 +649,27 @@ else
         end
     elseif CONFIG.Other_setting.repeat_world == true and CONFIG.Other_setting.disable_webhook == false then
         sendwebhook("Starting PTHT")
+        Sleep(1000)
         while true do
             if CheckEmptyTile() == 0 then
                 cektree()
             end
             while checkseed() > 0 do
                 if CONFIG.Hand_setting.hand_id == 5480 then
-                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                     hts()
                 elseif CONFIG.Hand_setting.hand_id == 13826 then
-                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                     htmray()
                 else
-                    sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                     ht()
                 end
             end
             while CheckEmptyTile() ~= 0 do
                 if CONFIG.pink_crystal == true then
-                    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                     plantcrystal()
                 else
                     if CONFIG.plant_mray == true then
-                        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                         plantmray()
                     else
-                        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                         plant()
                     end
                 end
@@ -705,31 +677,26 @@ else
         end
     elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == false then
         sendwebhook("Starting PTHT")
+        Sleep(1000)
         if CheckEmptyTile() == 0 then
             cektree()
         end
-        while checkseed() > 0 do
+        while checkseed() > 0 do        
             if CONFIG.Hand_setting.hand_id == 5480 then
-                sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                 hts()
             elseif CONFIG.Hand_setting.hand_id == 13826 then
-                sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                 htmray()
             else
-                sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
                 ht()
             end
         end
         while CheckEmptyTile() ~= 0 do
             if CONFIG.pink_crystal == true then
-                sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                 plantcrystal()
             else
                 if CONFIG.plant_mray == true then
-                    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                     plantmray()
                 else
-                    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
                     plant()
                 end
             end
