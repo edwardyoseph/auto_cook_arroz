@@ -495,7 +495,7 @@ else
 	while checkWear(CONFIG.Hand_setting.hand_id) ~= 1 do
 	wear(CONFIG.Hand_setting.hand_id)
 	Sleep(1000)
-    Say("`1Wearing item "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
+    say("`1Wearing item "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
 	end
 end
 
