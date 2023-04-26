@@ -488,11 +488,24 @@ function checkWear(id)
     return 0
 end
 
+function checkhand()
+    if checkWear(CONFIG.Hand_setting.hand_id) == 1 then
+        say("`1Using "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
+        Sleep(1000)
+    else
+        if checkWear(CONFIG.Hand_setting.hand_id) ~= 1 then
+        wear(CONFIG.Hand_setting.hand_id)
+        Sleep(1000)
+        checkhand()
+        end
+    end
+end
+
 if checkWear(CONFIG.Hand_setting.hand_id) == 1 then
     say("`1Using "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
     Sleep(1000)
 else
-	while checkWear(CONFIG.Hand_setting.hand_id) ~= 1 do
+	if checkWear(CONFIG.Hand_setting.hand_id) ~= 1 then
 	wear(CONFIG.Hand_setting.hand_id)
 	Sleep(1000)
     say("`1Wearing item "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
