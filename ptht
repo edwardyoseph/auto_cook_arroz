@@ -472,6 +472,33 @@ function plantcrystal()
     end
 end
 
+function wear(id)
+    pkt = {}
+    pkt.type = 10
+    pkt.value = id
+    SendPacketRaw(false, pkt)
+end
+
+function checkWear(id)
+    for _, itm in pairs(GetInventory()) do
+        if itm.id == id then
+            return itm.flags
+        end    
+    end
+    return 0
+end
+
+if checkWear(CONFIG.Hand_setting.hand_id) == 1 then
+    say("`1Using "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
+    Sleep(1000)
+else
+	while checkWear(CONFIG.Hand_setting.hand_id) ~= 1 do
+	wear(CONFIG.Hand_setting.hand_id)
+	Sleep(1000)
+    Say("`1Wearing item "..GetItemInfo(CONFIG.Hand_setting.hand_id).name)
+	end
+end
+
 if CONFIG.Hand_setting.hand_id == 13862 then
 SendPacket(2,[[
 action|dialog_return
