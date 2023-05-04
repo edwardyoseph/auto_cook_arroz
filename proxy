@@ -9,12 +9,27 @@ function wear(id)
     SendPacketRaw(false, pkt)
 end
 
+function say(txt)
+    SendPacket(2,"action|input\ntext|"..txt)
+end
+
+function FChat(txt)
+    p = {}
+    p[0] = "OnTextOverlay"
+    p[1] = txt
+    SendVariantList(p)
+  end
+
 function command()
     varlist_comamnd = {}
     varlist_comamnd[0] = "OnDialogRequest"
     varlist_comamnd[1] = [[
 set_default_color|`o
 add_label_with_icon|big|`1Grow Script Community``|left|528|
+add_label_with_icon|small|`1Proxy Version `21.01|left|
+add_spacer|small|
+add_label_with_icon|small|Update Log|left|32|
+add_label_with_icon|small|`1add btk some helper|left|
 add_spacer|small|
 add_label_with_icon|small|Command List|left|32|
 add_label_with_icon|small|`2/warp `1~warp to other world|left|
@@ -23,11 +38,24 @@ add_label_with_icon|small|`2/re `1~rejoin world|left|
 add_label_with_icon|small|`2/dw `1~drop wl|left|
 add_label_with_icon|small|`2/dd `1~drop dl|left|
 add_label_with_icon|small|`2/db `1~drop bgl|left|
+add_label_with_icon|small|`2/btk 1 `1~btk vertical mode|left|
+add_label_with_icon|small|`2/btk 2 `1~btk horizontal mode|left|
+add_label_with_icon|small|`2/p1 `1~pos count gems 1|left|
+add_label_with_icon|small|`2/p2 `1~pos count gems 2|left|
+add_label_with_icon|small|`2/c `1~ count gems|left|
 add_spacer|small|
 add_label_with_icon|small|`2real rake spin|left|758|
 add_quick_exit
 ]]
 SendVariantList(varlist_comamnd)
+end
+
+function SChat(txt)
+    s = {}
+    s[0] = "OnTalkBubble"
+    s[1] = GetLocal().netid
+    s[2] = txt
+    SendVariantList(s)
 end
 
 function findItem(id)
@@ -74,9 +102,11 @@ function printa(v)
     end
     return false
 end
-
 AddHook("onvariant", 1, printa)
-  
+
+FChat("`1Proxy By Grow Script Community")
+Sleep(3000)
+FChat("`1Be careful if you buy this from others")
 AddHook("onsendpacket", 0, function(type, pkt)
     if pkt:find("/warp (%w+)") then
         RequestJoinWorld(pkt:match("/warp (%w+)"))
@@ -105,4 +135,99 @@ AddHook("onsendpacket", 0, function(type, pkt)
         SendPacket(2,"action|dialog_return\ndialog_name|drop\nitem_drop|7188|\nitem_count|"..tonumber(pkt:match("/db (%d+)")))
         return true
     end
+    if pkt:find("/btk 1") then
+        LogToConsole("`2BTK Set to vertical mode")
+        btk1 = true
+        btk2 = false
+        return true
+    elseif pkt:find("/btk 2") then
+        LogToConsole("`2BTK Set to horizontal mode")
+        btk2 = true
+        btk1 = false
+        return true
+    end
+    if pkt:find("/p1") then
+        FChat("`1Pos 1 configured")
+        if btk1 == true then
+            pos1 = math.floor(GetLocal().pos.x / 32)
+            pos2 = math.floor(GetLocal().pos.y / 32) - 1
+            pos3 = math.floor(GetLocal().pos.y / 32)
+            pos4 = math.floor(GetLocal().pos.y / 32) + 1
+        elseif btk2 == true then
+            pos1 = math.floor(GetLocal().pos.y / 32)
+            pos2 = math.floor(GetLocal().pos.x / 32) - 1
+            pos3 = math.floor(GetLocal().pos.x / 32)
+            pos4 = math.floor(GetLocal().pos.x / 32) + 1
+        end  
+    return true
+    elseif pkt:find("/p2") then
+        FChat("`1Pos 2 configured")
+        if btk1 == true then
+            pos5 = math.floor(GetLocal().pos.x / 32)
+            pos6 = math.floor(GetLocal().pos.y / 32) - 1
+            pos7 = math.floor(GetLocal().pos.y / 32)
+            pos8 = math.floor(GetLocal().pos.y / 32) + 1
+        elseif btk2 == true then
+            pos5 = math.floor(GetLocal().pos.y / 32)
+            pos6 = math.floor(GetLocal().pos.x / 32) - 1
+            pos7 = math.floor(GetLocal().pos.x / 32)
+            pos8 = math.floor(GetLocal().pos.x / 32) + 1
+        end
+        return true
+    end
+    if pkt:find("/c") then
+        amount1 = 0
+        amount2 = 0
+        if btk1 == true then
+            for _, obj in pairs(GetObjectList()) do
+                if obj.id == 112 then
+                    x = math.floor(obj.pos.x /32)
+                    y = math.floor(obj.pos.y /32)
+                    if x == pos1 then
+                        if y == pos2 or y == pos3 or y == pos4 then
+                            amount1 = amount1 + obj.amount 
+                        end
+                    end
+                    if x == pos5 then
+                        if y == pos6 or y == pos7 or y == pos8 then
+                            amount2 = amount2 + obj.amount
+                        end
+                    end
+                end
+            end
+            if amount1 == amount2 then
+                say("`0[TIE] `2" .. amount1 .. " (gems) `0/ `2" .. amount2 .. " (gems) `0[TIE]")
+            elseif amount1 < amount2 then
+                say("`4[Lose] `b" .. amount1 .. " (gems) `0/ `2" .. amount2 .. " (gems) `9[win]")
+            elseif amount1 > amount2 then
+                say("`9[WIN] `2" .. amount1 .. " (gems) `0/ `b" .. amount2 .. " (gems) `4[Lose]")
+            end
+        elseif btk2 == true then
+            for _, obj in pairs(GetObjectList()) do
+                if obj.id == 112 then
+                    x = math.floor(obj.pos.x /32)
+                    y = math.floor(obj.pos.y /32)
+                    if y == pos1 then
+                        if x == pos2 or x == pos3 or x == pos4 then
+                            amount1 = amount1 + obj.amount 
+                        end
+                    end
+                    if y == pos5 then
+                        if x == pos6 or x == pos7 or x == pos8 then
+                            amount2 = amount2 + obj.amount
+                        end
+                    end
+                end
+            end
+            if amount1 == amount2 then
+                say("`0[TIE] `2" .. amount1 .. " (gems) `0/ `2" .. amount2 .. " (gems) `0[TIE]")
+            elseif amount1 < amount2 then
+                say("`4[Lose] `b" .. amount1 .. " (gems) `0/ `2" .. amount2 .. " (gems) `9[win]")
+            elseif amount1 > amount2 then
+                say("`9[WIN] `2" .. amount1 .. " (gems) `0/ `b" .. amount2 .. " (gems) `4[Lose]")
+            end
+        end
+    return true
+    end
 end)
+
