@@ -26,25 +26,23 @@ function command()
     varlist_comamnd[1] = [[
 set_default_color|`o
 add_label_with_icon|big|`1Grow Script Community``|left|528|
-add_label_with_icon|small|`1Proxy Version `21.01|left|
+add_label_with_icon|small|`1Proxy Version `21.02|left|
 add_spacer|small|
 add_label_with_icon|small|Update Log|left|32|
-add_label_with_icon|small|`1add btk some helper|left|
+add_label_with_icon|small|~>`1slightly refined menu /proxy|left|
 add_spacer|small|
 add_label_with_icon|small|Command List|left|32|
-add_label_with_icon|small|`2/warp `1~warp to other world|left|
-add_label_with_icon|small|`2/rc `1~reconnect|left|
-add_label_with_icon|small|`2/re `1~rejoin world|left|
-add_label_with_icon|small|`2/dw `1~drop wl|left|
-add_label_with_icon|small|`2/dd `1~drop dl|left|
-add_label_with_icon|small|`2/db `1~drop bgl|left|
-add_label_with_icon|small|`2/btk 1 `1~btk vertical mode|left|
-add_label_with_icon|small|`2/btk 2 `1~btk horizontal mode|left|
-add_label_with_icon|small|`2/p1 `1~pos count gems 1|left|
-add_label_with_icon|small|`2/p2 `1~pos count gems 2|left|
-add_label_with_icon|small|`2/c `1~ count gems|left|
-add_spacer|small|
-add_label_with_icon|small|`2real rake spin|left|758|
+add_label_with_icon|small|~>`2/warp <world name> `1(warp to other world)|left|
+add_label_with_icon|small|~>`2/rc `1(reconnect)|left|
+add_label_with_icon|small|~>`2/re `1(rejoin world)|left|
+add_label_with_icon|small|~>`2/dw <amount> `1(drop wl)|left|
+add_label_with_icon|small|~>`2/dd <amount> `1(drop dl)|left|
+add_label_with_icon|small|~>`2/db <amount> `1(drop bgl)|left|
+add_label_with_icon|small|~>`2/btk 1 `1(btk vertical mode)|left|
+add_label_with_icon|small|~>`2/btk 2 `1(btk horizontal mode)|left|
+add_label_with_icon|small|~>`2/p1 `1(pos count gems 1)|left|
+add_label_with_icon|small|~>`2/p2 `1(pos count gems 2)|left|
+add_label_with_icon|small|~>`2/c `1(count gems)|left|
 add_quick_exit
 ]]
 SendVariantList(varlist_comamnd)
@@ -104,9 +102,6 @@ function printa(v)
 end
 AddHook("onvariant", 1, printa)
 
-FChat("`1Proxy By Grow Script Community")
-Sleep(3000)
-FChat("`1Be careful if you buy this from others")
 AddHook("onsendpacket", 0, function(type, pkt)
     if pkt:find("/warp (%w+)") then
         RequestJoinWorld(pkt:match("/warp (%w+)"))
@@ -231,3 +226,6 @@ AddHook("onsendpacket", 0, function(type, pkt)
     end
 end)
 
+FChat("`1Proxy By Grow Script Community")
+Sleep(3000)
+FChat("`1Be careful if you buy this from others")
