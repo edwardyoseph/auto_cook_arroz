@@ -655,7 +655,7 @@ else
             while checkseed() > 0 do
                 if CONFIG.Hand_setting.hand_id == 5480 then
                     hts()
-                elseif CONFIG.Hand_setting.hand_id == 13826 then
+                elseif CONFIG.Hand_setting.hand_id == 13862 then
                     htmray()
                 else
                     ht()
@@ -680,7 +680,7 @@ else
         while checkseed() > 0 do
             if CONFIG.Hand_setting.hand_id == 5480 then
                 hts()
-            elseif CONFIG.Hand_setting.hand_id == 13826 then
+            elseif CONFIG.Hand_setting.hand_id == 13862 then
                 htmray()
             else
                 ht()
@@ -707,7 +707,7 @@ else
             while checkseed() > 0 do
                 if CONFIG.Hand_setting.hand_id == 5480 then
                     hts()
-                elseif CONFIG.Hand_setting.hand_id == 13826 then
+                elseif CONFIG.Hand_setting.hand_id == 13862 then
                     htmray()
                 else
                     ht()
@@ -734,7 +734,7 @@ else
         while checkseed() > 0 do        
             if CONFIG.Hand_setting.hand_id == 5480 then
                 hts()
-            elseif CONFIG.Hand_setting.hand_id == 13826 then
+            elseif CONFIG.Hand_setting.hand_id == 13862 then
                 htmray()
             else
                 ht()
