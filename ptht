@@ -274,7 +274,7 @@ function htmray()
                 end
             end
         elseif CONFIG.Hand_setting.harvest_type == "down" then
-            for y = 0, 199 do
+            for y = 199, 0, -1 do
                 for x = 0 , 199 do
                     if IsReady(GetTile(x,y)) then
                         FindPath(x,y,100)
