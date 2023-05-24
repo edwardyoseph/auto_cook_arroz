@@ -19,7 +19,7 @@ function punchs(x, y)
         hld.state = st
         SendPacketRaw(false,hld)
     end
-    Sleep(CONFIG.Farm_setting.delay_harvest)
+    Sleep(50)
 end
 
 function say(txt)
@@ -263,8 +263,8 @@ function htmray()
             LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
         end
         if CONFIG.Hand_setting.harvest_type == "up" then
-            for y = 0, 199 do
-                for x = 0, 199 do
+            for x = 0, 199 do
+                for y = 0, 199 do
                     if IsReady(GetTile(x,y)) then
                         FindPath(x,y,100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -274,8 +274,8 @@ function htmray()
                 end
             end
         elseif CONFIG.Hand_setting.harvest_type == "down" then
-            for y = 199, 0, -1 do
-                for x = 0 , 199 do
+            for x = 0, 199 do
+                for y = 199 , 0, -1 do
                     if IsReady(GetTile(x,y)) then
                         FindPath(x,y,100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
