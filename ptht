@@ -233,7 +233,7 @@ function ht()
             for y = 0, 193 do
                 for x = 0, 199 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punch(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -244,7 +244,7 @@ function ht()
             for y = 193, 0, -1 do
                 for x = 0, 199 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punch(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -266,7 +266,7 @@ function htmray()
             for x = 0, 199 do
                 for y = 0, 199 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punch(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -277,7 +277,7 @@ function htmray()
             for x = 0, 199 do
                 for y = 199 , 0, -1 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punch(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -299,7 +299,7 @@ function hts()
             for y = 0, 193 do
                 for x = 0, 199 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punchs(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -310,7 +310,7 @@ function hts()
             for y = 193, 0, -1 do
                 for x = 0, 199 do
                     if IsReady(GetTile(x,y)) then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
                         punchs(0,0)
                         Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -332,18 +332,9 @@ function plant()
             for y=193,0,-1 do   
                 for x=0, 199 do
                     if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-                for x=199, 0, -1 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
                     end
                 end
             end
@@ -352,18 +343,9 @@ function plant()
             for y=0,193 do
                 for x=0, 199 do
                     if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                    end
-                end
-                for x=199, 0, -1 do
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                        FindPath(x,y,100)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.Farm_setting.delay_plant)
                     end
                 end
             end
@@ -379,43 +361,51 @@ function plantmray()
         else
             LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
         end
-        for y=183,193 do
-            for x=0,199 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y-2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
+        if CONFIG.Hand_setting.plant_type == "down" then
+            for y=183,193 do
+                for x=0,199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y-2,CONFIG.delay_findPath or 100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,2)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
                 end
             end
-            for x=199, 0, -1 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y-2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
+            for y=183,0,-1 do
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y+2,CONFIG.delay_findPath or 100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,-2)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
                 end
             end
+            cektree()
+        elseif CONFIG.Hand_setting.plant_type == "up" then
+            for y=8,0,-1 do
+                for x=0,199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y+2,CONFIG.delay_findPath or 100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,-2)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+            for y=10,199 do
+                for x=0, 199 do
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
+                        FindPath(x,y-2,CONFIG.delay_findPath or 100)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                        place(5640,0,2)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
+                    end
+                end
+            end
+            cektree()
         end
-        for y=183,0,-1 do
-            for x=0, 199 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y+2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,-2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-            for x=199, 0, -1 do
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.Farm_setting.seed_id then
-                    FindPath(x,y+2,100)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                    place(5640,0,-2)
-                    Sleep(CONFIG.Farm_setting.delay_plant)
-                end
-            end
-        end
-        cektree()
     end
 end
 
@@ -424,7 +414,7 @@ function getObject(id)
         if obj.id == CONFIG.Farm_setting.seed_id then
             x = math.floor(obj.pos.x /32)
             y = math.floor(obj.pos.y /32)
-            FindPath(x,y,100)
+            FindPath(x,y,CONFIG.delay_findPath or 100)
             Sleep(1000)
             break
         end
@@ -446,7 +436,7 @@ function plantcrystal()
                             getObject(CONFIG.Farm_setting.seed_id)
                             Sleep(500)
                         end
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(CONFIG.Farm_setting.seed_id,0,0)
                         Sleep(CONFIG.Farm_setting.delay_plant)
@@ -458,7 +448,7 @@ function plantcrystal()
                             getObject(CONFIG.Farm_setting.seed_id)
                             Sleep(500)
                         end
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(CONFIG.Farm_setting.seed_id,0,0)
                         Sleep(CONFIG.Farm_setting.delay_plant)
@@ -473,7 +463,7 @@ function plantcrystal()
                             getObject(CONFIG.Farm_setting.seed_id)
                             Sleep(500)
                         end
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(CONFIG.Farm_setting.seed_id,0,0)
                         Sleep(CONFIG.Farm_setting.delay_plant)
@@ -485,7 +475,7 @@ function plantcrystal()
                             getObject(CONFIG.Farm_setting.seed_id)
                             Sleep(500)
                         end
-                        FindPath(x,y,100)
+                        FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(CONFIG.Farm_setting.seed_id,0,0)
                         Sleep(CONFIG.Farm_setting.delay_plant)
@@ -570,7 +560,7 @@ Sleep(100)
         for y = 199, 0, -1 do
             for x = 0, 199 do
                 if IsReady(GetTile(x,y)) then
-                    FindPath(x,y,100)
+                    FindPath(x,y,CONFIG.delay_findPath or 100)
                     Sleep(CONFIG.Farm_setting.delay_harvest)
                     punch(0,0)
                     Sleep(CONFIG.Farm_setting.delay_harvest)
@@ -594,7 +584,7 @@ Sleep(100)
     for y=193,0,-1 do
         for x=0, 199 do
             if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13655 then
-                FindPath(x,y,100)
+                FindPath(x,y,CONFIG.delay_findPath or 100)
                 Sleep(CONFIG.Farm_setting.delay_plant)
                 place(13655,0,0)
                 Sleep(CONFIG.Farm_setting.delay_plant)
@@ -663,11 +653,14 @@ else
             end
             while CheckEmptyTile() ~= 0 do
                 if CONFIG.pink_crystal == true then
+                    Sleep(1000)
                     plantcrystal()
                 else
                     if CONFIG.plant_mray == true then
+                        Sleep(1000)
                         plantmray()
                     else
+                        Sleep(1000)
                         plant()
                     end
                 end
