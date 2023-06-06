@@ -335,6 +335,7 @@ function plant()
                         FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(5640,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
                     end
                 end
             end
@@ -346,6 +347,7 @@ function plant()
                         FindPath(x,y,CONFIG.delay_findPath or 100)
                         Sleep(CONFIG.Farm_setting.delay_plant)
                         place(5640,0,0)
+                        Sleep(CONFIG.Farm_setting.delay_plant)
                     end
                 end
             end
