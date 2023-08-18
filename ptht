@@ -255,7 +255,9 @@ function cektree()
             check_ignoreo|0]])
                     Sleep(100)
                     plantfast()
+                    Sleep(500)
                     nambal()
+                    Sleep(500)
                 end
             else
                 FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
@@ -279,10 +281,13 @@ function cektree()
             check_ignoreo|0]])
                 Sleep(100)
                 plantfast()
+                Sleep(500)
                 nambal()
+                Sleep(500)
             end
         else
             plant()
+            Sleep(500)
         end
     end
 end
@@ -418,6 +423,7 @@ function plant()
             end
         end
         cektree()
+        Sleep(500)
     end
 end
 
@@ -450,6 +456,7 @@ function plantmray()
                 end
             end
             cektree()
+            Sleep(500)
         elseif CONFIG.Hand_setting.plant_type == "up" then
             for y=8,0,-1 do
                 for x=0,199 do
@@ -472,6 +479,7 @@ function plantmray()
                 end
             end
             cektree()
+            Sleep(500)
         end
     end
 end
@@ -551,6 +559,7 @@ function plantcrystal()
             end
         end
         cektree()
+        Sleep(500)
     end
 end
 
@@ -859,7 +868,9 @@ else
                         check_ignoreo|0]])
                                 Sleep(100)
                                 plantfast()
+                                Sleep(500)
                                 nambal()
+                                Sleep(500)
                             end
                         else
                             FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
@@ -883,11 +894,14 @@ else
                         check_ignoreo|0]])
                             Sleep(100)
                             plantfast()
+                            Sleep(500)
                             nambal()
+                            Sleep(500)
                         end
                     else
                         Sleep(1000)
                         plant()
+                        Sleep(500)
                     end
                 end
             end
@@ -895,14 +909,18 @@ else
     elseif CONFIG.Other_setting.repeat_world == false and CONFIG.Other_setting.disable_webhook == true then
         if CheckEmptyTile() == 0 then
             cektree()
+            Sleep(500)
         end
         while checkseed() > 0 do
             if CONFIG.Hand_setting.hand_id == 5480 then
                 hts()
+                Sleep(500)
             elseif CONFIG.Hand_setting.hand_id == 13862 then
                 htmray()
+                Sleep(500)
             else
                 ht()
+                Sleep(500)
             end
         end
         while CheckEmptyTile() ~= 0 do
@@ -945,8 +963,10 @@ else
                     check_gems|1
                     check_ignoreo|0]])
                             Sleep(100)
-                            plantfast()
+                            plantfast()      
+                            Sleep(500)
                             nambal()
+                            Sleep(500)
                         end
                     else
                         FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
@@ -970,10 +990,13 @@ else
                     check_ignoreo|0]])
                         Sleep(100)
                         plantfast()
+                        Sleep(500)
                         nambal()
+                        Sleep(500)
                     end
                 else
                     plant()
+                    Sleep(500)
                 end
             end
         end
@@ -983,22 +1006,28 @@ else
         while true do
             if CheckEmptyTile() == 0 then
                 cektree()
+                Sleep(500)
             end
             while checkseed() > 0 do
                 if CONFIG.Hand_setting.hand_id == 5480 then
                     hts()
+                    Sleep(500)
                 elseif CONFIG.Hand_setting.hand_id == 13862 then
                     htmray()
+                    Sleep(500)
                 else
                     ht()
+                    Sleep(500)
                 end
             end
             while CheckEmptyTile() ~= 0 do
                 if CONFIG.pink_crystal == true then
                     plantcrystal()
+                    Sleep(500)
                 else
                     if CONFIG.plant_mray == true then
                         plantmray()
+                        Sleep(500)
                     elseif CONFIG.Fast_plant.use_feature == true then
                         if CHANGE_MAGPLANT then
                             if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
@@ -1058,10 +1087,13 @@ else
                         check_ignoreo|0]])
                             Sleep(100)
                             plantfast()
+                            Sleep(500)
                             nambal()
+                            Sleep(500)
                         end
                     else
                         plant()
+                        Sleep(500)
                     end
                 end
             end
@@ -1071,14 +1103,18 @@ else
         Sleep(1000)
         if CheckEmptyTile() == 0 then
             cektree()
+            Sleep(500)
         end
         while checkseed() > 0 do        
             if CONFIG.Hand_setting.hand_id == 5480 then
                 hts()
+                Sleep(500)
             elseif CONFIG.Hand_setting.hand_id == 13862 then
                 htmray()
+                Sleep(500)
             else
                 ht()
+                Sleep(500)
             end
         end
         while CheckEmptyTile() ~= 0 do
@@ -1122,7 +1158,9 @@ else
                     check_ignoreo|0]])
                             Sleep(100)
                             plantfast()
+                            Sleep(500)
                             nambal()
+                            Sleep(500)
                         end
                     else
                         FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
@@ -1146,10 +1184,13 @@ else
                     check_ignoreo|0]])
                         Sleep(100)
                         plantfast()
+                        Sleep(500)
                         nambal()
+                        Sleep(500)
                     end
                 else
                     plant()
+                    Sleep(500)
                 end
             end
         end
