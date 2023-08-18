@@ -635,30 +635,58 @@ function CheckRemote()
 end
 
 function plantfast()
-    count = 0
-    for y= CONFIG.Fast_plant.vertical_size[2],CONFIG.Fast_plant.vertical_size[1],-2 do
-        if count%2 == 0 then
-            for x= CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.horizontal_size[2],10 do
-                if EMPTY_MAGPLANT then return end
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
-                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
-                    Sleep(CONFIG.Fast_plant.delayplant)
-                    place(5640,0,0)
-                    Sleep(CONFIG.Fast_plant.delayplant)
+    if CONFIG.Hand_setting.plant_type == "down" then
+        count = 0
+        for y= CONFIG.Fast_plant.vertical_size[2],CONFIG.Fast_plant.vertical_size[1],-2 do
+            if count%2 == 0 then
+                for x= CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.horizontal_size[2],10 do
+                    if EMPTY_MAGPLANT then return end
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                        FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                    end
+                end
+            else
+                for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-10 do
+                    if EMPTY_MAGPLANT then return end
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                        FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                    end
                 end
             end
-        else
-            for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-10 do
-                if EMPTY_MAGPLANT then return end
-                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
-                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
-                    Sleep(CONFIG.Fast_plant.delayplant)
-                    place(5640,0,0)
-                    Sleep(CONFIG.Fast_plant.delayplant)
-                end
-            end
+            count = count+1
         end
-        count = count+1
+    elseif CONFIG.Hand_setting.plant_type == "up" then
+        count = 0
+        for y= CONFIG.Fast_plant.vertical_size[1],CONFIG.Fast_plant.vertical_size[2] do
+            if count%2 == 0 then
+                for x= CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.horizontal_size[2],10 do
+                    if EMPTY_MAGPLANT then return end
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                        FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                    end
+                end
+            else
+                for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-10 do
+                    if EMPTY_MAGPLANT then return end
+                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                        FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                        place(5640,0,0)
+                        Sleep(CONFIG.Fast_plant.delayplant)
+                    end
+                end
+            end
+            count = count+1
+        end
     end
 end
 
