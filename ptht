@@ -1,3 +1,7 @@
+EMPTY_MAGPLANT  = false
+CHANGE_MAGPLANT = false
+LEFT_MAG_X = CONFIG.Fast_plant.coordinate_magplant[1]
+
 function punchs(x, y) 
     pkt = {} 
     pkt.px = math.floor(GetLocal().pos.x / 32 + x)
@@ -216,6 +220,67 @@ function cektree()
     elseif CheckEmptyTile() ~= 0 then
         if CONFIG.plant_mray == true then
             plantmray()
+        elseif CONFIG.Fast_plant.use_feature == true then
+            if CHANGE_MAGPLANT then
+                if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
+                    CONFIG.Fast_plant.coordinate_magplant[1] = CONFIG.Fast_plant.coordinate_magplant[1] + 1
+                    CheckRemote()
+                    Sleep(800)
+                elseif GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg ~= 5638 then
+                    CONFIG.Fast_plant.coordinate_magplant = LEFT_MAG_X
+                    CheckRemote()
+                    Sleep(800)
+                end
+                CHANGE_MAGPLANT = false
+            end
+            if GetLocal().pos.y //32 >= CONFIG.Fast_plant.vertical_size[1] and GetLocal().pos.y //32 <= CONFIG.Fast_plant.vertical_size[2] then
+                if  GetLocal().pos.x //32 >= CONFIG.Fast_plant.horizontal_size[1] or GetLocal().pos.x //32 <= CONFIG.Fast_plant.horizontal_size[2] then
+                    Sleep(100)
+                    place(5640,0,0)
+                    Sleep(100)
+                    SendPacket(2,[[action|dialog_return
+            dialog_name|cheats
+            check_autofarm|0
+            check_bfg|0
+            check_autospam|0
+            check_autopull|0
+            check_autoplace|1
+            check_antibounce|0
+            check_modfly|0
+            check_speed|0
+            check_gravity|0
+            check_lonely|0
+            check_fastdrop|0
+            check_gems|1
+            check_ignoreo|0]])
+                    Sleep(100)
+                    plantfast()
+                    nambal()
+                end
+            else
+                FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
+                Sleep(100)
+                place(5640,0,0)
+                Sleep(100)
+                SendPacket(2,[[action|dialog_return
+            dialog_name|cheats
+            check_autofarm|0
+            check_bfg|0
+            check_autospam|0
+            check_autopull|0
+            check_autoplace|1
+            check_antibounce|0
+            check_modfly|0
+            check_speed|0
+            check_gravity|0
+            check_lonely|0
+            check_fastdrop|0
+            check_gems|1
+            check_ignoreo|0]])
+                Sleep(100)
+                plantfast()
+                nambal()
+            end
         else
             plant()
         end
@@ -489,6 +554,17 @@ function plantcrystal()
     end
 end
 
+function wrench(x,y)
+    pkt = {}
+    pkt.type = 3
+    pkt.value = 32
+    pkt.px = math.floor(GetLocal().pos.x / 32 +x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 +y)
+    pkt.x = GetLocal().pos.x
+    pkt.y = GetLocal().pos.y
+    SendPacketRaw(false, pkt)
+end
+
 function wear(id)
     pkt = {}
     pkt.type = 10
@@ -531,26 +607,113 @@ else
 	end
 end
 
-if CONFIG.Hand_setting.hand_id == 13862 then
-SendPacket(2,[[
-action|dialog_return
-dialog_name|info_box
-mray_1hit|0]])
-Sleep(1000)
-SendPacket(2, [[
-action|dialog_return
-dialog_name|cheats
-check_gems|1
-]])
-else
-Sleep(1000)
-SendPacket(2, [[
-action|dialog_return
-dialog_name|cheats
-check_gems|1
-]])
-Sleep(1000)
+function CheckRemote()
+    if GetWorld() == nil then return end
+    if findItem(5640) < 1 or EMPTY_MAGPLANT then
+        Sleep(800)
+        FindPath(CONFIG.Fast_plant.coordinate_magplant[1], CONFIG.Fast_plant.coordinate_magplant[2] - 1, 100)
+        wrench(0,1)
+        Sleep(200)
+        SendPacket(2, "action|dialog_return\ndialog_name|magplant_edit\nx|".. CONFIG.Fast_plant.coordinate_magplant[1] .."|\ny|" .. CONFIG.Fast_plant.coordinate_magplant[2] .. "|\nbuttonClicked|getRemote")
+        Sleep(200)
+        end
+
+    if findItem(5640) >= 1 and EMPTY_MAGPLANT then
+        EMPTY_MAGPLANT = false
+    end
+    Sleep(800)
+    return findItem(5640) >= 1
 end
+
+function plantfast()
+    count = 0
+    for y= CONFIG.Fast_plant.vertical_size[2],CONFIG.Fast_plant.vertical_size[1],-2 do
+        if count%2 == 0 then
+            for x= CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.horizontal_size[2],10 do
+                if EMPTY_MAGPLANT then return end
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                    place(5640,0,0)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                end
+            end
+        else
+            for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-10 do
+                if EMPTY_MAGPLANT then return end
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                    place(5640,0,0)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                end
+            end
+        end
+        count = count+1
+    end
+end
+
+function nambal()
+    count = 0
+    for y= CONFIG.Fast_plant.vertical_size[2],CONFIG.Fast_plant.vertical_size[1],-2 do
+        if count%2 == 0 then
+            for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-1 do
+                if EMPTY_MAGPLANT then return end
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                    place(5640,0,0)
+                    Sleep(30)
+                end
+            end
+        else
+            for x= CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.horizontal_size[2],1 do
+                if EMPTY_MAGPLANT then return end
+                if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= 13903 then
+                    FindPath(x,y,CONFIG.Fast_plant.delayPath)
+                    Sleep(CONFIG.Fast_plant.delayplant)
+                    place(5640,0,0)
+                    Sleep(30)
+                end
+            end
+        end
+        count = count+1
+    end
+end 
+
+function hook(varlist)
+    if varlist[0]:find("OnTalkBubble") and (varlist[2]:find("The MAGPLANT 5000 is empty")) then
+        CHANGE_MAGPLANT = true
+        EMPTY_MAGPLANT = true
+        return true
+    end
+    if varlist[0]:find("OnDialogRequest") and varlist[1]:find("magplant_edit") then
+        local x = varlist[1]:match('embed_data|x|(%d+)')
+        local y = varlist[1]:match('embed_data|y|(%d+)')
+        return true
+    end
+    if varlist[0]:find("OnDialogRequest") and (varlist[1]:find("Item Finder") or varlist[1]:find("The MAGPLANT 5000 is disabled.")) then
+        return true
+    end
+    if varlist[0]:find("OnConsoleMessage") and varlist[1]:find("Cheat Active") then
+        return true
+    end
+    if varlist[0]:find("OnConsoleMessage") and varlist[1]:find("Whoa, calm down toggling cheats on/off... Try again in a second!") then
+        return true
+    end
+    if varlist[0]:find("OnConsoleMessage") and varlist[1]:find("Applying cheats...") then
+        return true
+    end
+    if varlist[0]:find("OnConsoleMessage") and varlist[1]:find("You're now") then
+        return true
+    end
+    if varlist[0]:find("OnConsoleMessage") and varlist[1]:find("Cheat Disable:") then
+        return true
+    end
+end
+AddHook("onvariant", "Main Hook", hook)
+
+CheckRemote()
 
 function htprmray()
     if checkseed() > 0 then
@@ -661,6 +824,67 @@ else
                     if CONFIG.plant_mray == true then
                         Sleep(1000)
                         plantmray()
+                    elseif CONFIG.Fast_plant.use_feature == true then
+                        if CHANGE_MAGPLANT then
+                            if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
+                                CONFIG.Fast_plant.coordinate_magplant[1] = CONFIG.Fast_plant.coordinate_magplant[1] + 1
+                                CheckRemote()
+                                Sleep(800)
+                            elseif GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg ~= 5638 then
+                                CONFIG.Fast_plant.coordinate_magplant = LEFT_MAG_X
+                                CheckRemote()
+                                Sleep(800)
+                            end
+                            CHANGE_MAGPLANT = false
+                        end
+                        if GetLocal().pos.y //32 >= CONFIG.Fast_plant.vertical_size[1] and GetLocal().pos.y //32 <= CONFIG.Fast_plant.vertical_size[2] then
+                            if  GetLocal().pos.x //32 >= CONFIG.Fast_plant.horizontal_size[1] or GetLocal().pos.x //32 <= CONFIG.Fast_plant.horizontal_size[2] then
+                                Sleep(100)
+                                place(5640,0,0)
+                                Sleep(100)
+                                SendPacket(2,[[action|dialog_return
+                        dialog_name|cheats
+                        check_autofarm|0
+                        check_bfg|0
+                        check_autospam|0
+                        check_autopull|0
+                        check_autoplace|1
+                        check_antibounce|0
+                        check_modfly|0
+                        check_speed|0
+                        check_gravity|0
+                        check_lonely|0
+                        check_fastdrop|0
+                        check_gems|1
+                        check_ignoreo|0]])
+                                Sleep(100)
+                                plantfast()
+                                nambal()
+                            end
+                        else
+                            FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
+                            Sleep(100)
+                            place(5640,0,0)
+                            Sleep(100)
+                            SendPacket(2,[[action|dialog_return
+                        dialog_name|cheats
+                        check_autofarm|0
+                        check_bfg|0
+                        check_autospam|0
+                        check_autopull|0
+                        check_autoplace|1
+                        check_antibounce|0
+                        check_modfly|0
+                        check_speed|0
+                        check_gravity|0
+                        check_lonely|0
+                        check_fastdrop|0
+                        check_gems|1
+                        check_ignoreo|0]])
+                            Sleep(100)
+                            plantfast()
+                            nambal()
+                        end
                     else
                         Sleep(1000)
                         plant()
@@ -687,6 +911,67 @@ else
             else
                 if CONFIG.plant_mray == true then
                     plantmray()
+                elseif CONFIG.Fast_plant.use_feature == true then
+                    if CHANGE_MAGPLANT then
+                        if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
+                            CONFIG.Fast_plant.coordinate_magplant[1] = CONFIG.Fast_plant.coordinate_magplant[1] + 1
+                            CheckRemote()
+                            Sleep(800)
+                        elseif GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg ~= 5638 then
+                            CONFIG.Fast_plant.coordinate_magplant = LEFT_MAG_X
+                            CheckRemote()
+                            Sleep(800)
+                        end
+                        CHANGE_MAGPLANT = false
+                    end
+                    if GetLocal().pos.y //32 >= vertical_size[1] and GetLocal().pos.y //32 <= vertical_size[2] then
+                        if  GetLocal().pos.x //32 >= CONFIG.Fast_plant.horizontal_size[1] or GetLocal().pos.x //32 <= CONFIG.Fast_plant.horizontal_size[2] then
+                            Sleep(100)
+                            place(5640,0,0)
+                            Sleep(100)
+                            SendPacket(2,[[action|dialog_return
+                    dialog_name|cheats
+                    check_autofarm|0
+                    check_bfg|0
+                    check_autospam|0
+                    check_autopull|0
+                    check_autoplace|1
+                    check_antibounce|0
+                    check_modfly|0
+                    check_speed|0
+                    check_gravity|0
+                    check_lonely|0
+                    check_fastdrop|0
+                    check_gems|1
+                    check_ignoreo|0]])
+                            Sleep(100)
+                            plantfast()
+                            nambal()
+                        end
+                    else
+                        FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
+                        Sleep(100)
+                        place(5640,0,0)
+                        Sleep(100)
+                        SendPacket(2,[[action|dialog_return
+                    dialog_name|cheats
+                    check_autofarm|0
+                    check_bfg|0
+                    check_autospam|0
+                    check_autopull|0
+                    check_autoplace|1
+                    check_antibounce|0
+                    check_modfly|0
+                    check_speed|0
+                    check_gravity|0
+                    check_lonely|0
+                    check_fastdrop|0
+                    check_gems|1
+                    check_ignoreo|0]])
+                        Sleep(100)
+                        plantfast()
+                        nambal()
+                    end
                 else
                     plant()
                 end
@@ -714,6 +999,67 @@ else
                 else
                     if CONFIG.plant_mray == true then
                         plantmray()
+                    elseif CONFIG.Fast_plant.use_feature == true then
+                        if CHANGE_MAGPLANT then
+                            if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
+                                CONFIG.Fast_plant.coordinate_magplant[1] = CONFIG.Fast_plant.coordinate_magplant[1] + 1
+                                CheckRemote()
+                                Sleep(800)
+                            elseif GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg ~= 5638 then
+                                CONFIG.Fast_plant.coordinate_magplant = LEFT_MAG_X
+                                CheckRemote()
+                                Sleep(800)
+                            end
+                            CHANGE_MAGPLANT = false
+                        end
+                        if GetLocal().pos.y //32 >= CONFIG.Fast_plant.vertical_size[1] and GetLocal().pos.y //32 <= CONFIG.Fast_plant.vertical_size[2] then
+                            if  GetLocal().pos.x //32 >= CONFIG.Fast_plant.horizontal_size[1] or GetLocal().pos.x //32 <= CONFIG.Fast_plant.horizontal_size[2] then
+                                Sleep(100)
+                                place(5640,0,0)
+                                Sleep(100)
+                                SendPacket(2,[[action|dialog_return
+                        dialog_name|cheats
+                        check_autofarm|0
+                        check_bfg|0
+                        check_autospam|0
+                        check_autopull|0
+                        check_autoplace|1
+                        check_antibounce|0
+                        check_modfly|0
+                        check_speed|0
+                        check_gravity|0
+                        check_lonely|0
+                        check_fastdrop|0
+                        check_gems|1
+                        check_ignoreo|0]])
+                                Sleep(100)
+                                plantfast()
+                                nambal()
+                            end
+                        else
+                            FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
+                            Sleep(100)
+                            place(5640,0,0)
+                            Sleep(100)
+                            SendPacket(2,[[action|dialog_return
+                        dialog_name|cheats
+                        check_autofarm|0
+                        check_bfg|0
+                        check_autospam|0
+                        check_autopull|0
+                        check_autoplace|1
+                        check_antibounce|0
+                        check_modfly|0
+                        check_speed|0
+                        check_gravity|0
+                        check_lonely|0
+                        check_fastdrop|0
+                        check_gems|1
+                        check_ignoreo|0]])
+                            Sleep(100)
+                            plantfast()
+                            nambal()
+                        end
                     else
                         plant()
                     end
@@ -741,6 +1087,67 @@ else
             else
                 if CONFIG.plant_mray == true then
                     plantmray()
+                elseif CONFIG.Fast_plant.use_feature == true then
+                    if CHANGE_MAGPLANT then
+                        if GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg == 5638 then
+                            CONFIG.Fast_plant.coordinate_magplant[1] = CONFIG.Fast_plant.coordinate_magplant[1] + 1
+                            CheckRemote()
+                            Sleep(800)
+                        elseif GetTile(CONFIG.Fast_plant.coordinate_magplant[1] + 1, CONFIG.Fast_plant.coordinate_magplant[2]).fg ~= 5638 then
+                            CONFIG.Fast_plant.coordinate_magplant = LEFT_MAG_X
+                            CheckRemote()
+                            Sleep(800)
+                        end
+                        CHANGE_MAGPLANT = false
+                    end
+                    if GetLocal().pos.y //32 >= CONFIG.Fast_plant.vertical_size[1] and GetLocal().pos.y //32 <= CONFIG.Fast_plant.vertical_size[2] then
+                        if  GetLocal().pos.x //32 >= CONFIG.Fast_plant.horizontal_size[1] or GetLocal().pos.x //32 <= CONFIG.Fast_plant.horizontal_size[2] then
+                            Sleep(100)
+                            place(5640,0,0)
+                            Sleep(100)
+                            SendPacket(2,[[action|dialog_return
+                    dialog_name|cheats
+                    check_autofarm|0
+                    check_bfg|0
+                    check_autospam|0
+                    check_autopull|0
+                    check_autoplace|1
+                    check_antibounce|0
+                    check_modfly|0
+                    check_speed|0
+                    check_gravity|0
+                    check_lonely|0
+                    check_fastdrop|0
+                    check_gems|1
+                    check_ignoreo|0]])
+                            Sleep(100)
+                            plantfast()
+                            nambal()
+                        end
+                    else
+                        FindPath(CONFIG.Fast_plant.horizontal_size[1],CONFIG.Fast_plant.vertical_size[2],100)
+                        Sleep(100)
+                        place(5640,0,0)
+                        Sleep(100)
+                        SendPacket(2,[[action|dialog_return
+                    dialog_name|cheats
+                    check_autofarm|0
+                    check_bfg|0
+                    check_autospam|0
+                    check_autopull|0
+                    check_autoplace|1
+                    check_antibounce|0
+                    check_modfly|0
+                    check_speed|0
+                    check_gravity|0
+                    check_lonely|0
+                    check_fastdrop|0
+                    check_gems|1
+                    check_ignoreo|0]])
+                        Sleep(100)
+                        plantfast()
+                        nambal()
+                    end
                 else
                     plant()
                 end
