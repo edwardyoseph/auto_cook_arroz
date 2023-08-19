@@ -1,10 +1,23 @@
-tabel_hwid = {
+local tabel_hwid = {
     "J5N0CV09Z779223",
 }
 
+function execute_command(command)
+    local handle = io.popen(command)
+    local result = handle:read("*a")
+    handle:close()
+    return result:gsub("\n", "")
+end
+
+-- Menjalankan perintah PowerShell untuk mendapatkan HWID
+local hwid_command = "(Get-WmiObject Win32_ComputerSystemProduct).IdentifyingNumber"
+local hwid = execute_command('powershell -Command "' .. hwid_command .. '"')
+
+local match_found = false
+
 for _, id in pairs(tabel_hwid) do
     if hwid == id then
-        print(id)
         match_found = true
+        break
     end
 end
