@@ -1,0 +1,5 @@
+local tabel_hwid = {
+    "nilai1",
+    "nilai2",
+    "nilai3"
+}
