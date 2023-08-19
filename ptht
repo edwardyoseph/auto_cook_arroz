@@ -24,14 +24,14 @@ else
             delayplant = GSCM.World_setting.delay_plant,
             vertical_size = GSCM.World_setting.vertical_size,
             horizontal_size = GSCM.World_setting.horizontal_size,
-            coordinate_magplant = GSCM.World_setting.coordinate_magplant
+            coordinate_magplant = GSCM.World_setting.coordinate_magplant[1]
         }
     }
 end
 
 EMPTY_MAGPLANT  = false
 CHANGE_MAGPLANT = false
-LEFT_MAG_X = CONFIG.Fast_plant.coordinate_magplant[1]
+LEFT_MAG_X = CONFIG.Fast_plant.coordinate_magplant
 
 function punchs(x, y) 
     pkt = {} 
