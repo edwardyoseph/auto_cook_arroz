@@ -17,6 +17,5 @@ local match_found = false
 for _, id in pairs(tabel_hwid) do
     if hwid == id then
         match_found = true
-        break
     end
 end
