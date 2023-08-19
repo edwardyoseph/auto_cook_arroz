@@ -1,7 +1,5 @@
 tabel_hwid = {
-    "nilai1",
-    "nilai2",
-    "nilai3"
+    "J5N0CV09Z779223",
 }
 
 function execute_command(command)
