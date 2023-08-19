@@ -4,6 +4,7 @@ tabel_hwid = {
 
 for _, id in pairs(tabel_hwid) do
     if hwid == id then
+        print = id
         match_found = true
     end
 end
