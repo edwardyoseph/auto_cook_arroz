@@ -563,6 +563,8 @@ function powershell(message)
     end
 
 if match_found == true then
+    say("`2HWID Found")
+    Sleep(3000)
     CheckRemote()
     say("`1Script By Grow Script Community")
     Sleep(2000)
