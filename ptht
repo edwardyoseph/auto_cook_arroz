@@ -1,3 +1,34 @@
+if OLD_CONFIG == true then
+    config = config
+else
+    CONFIG = {
+        Farm_setting = {
+            seed_id = GSCM.World_setting.seed_id,
+            delay_plant = GSCM.World_setting.delay_plant,
+            delay_harvest = GSCM.World_setting.delay_harvest
+        },
+        Hand_setting = {
+            hand_id = GSCM.World_setting.hand_id,
+            plant_type = GSCM.Other_setting.plant_type,
+            harvest_type = GSCM.Other_setting.harvest_type
+        },
+        Other_setting = {
+            repeat_world = GSCM.Other_setting.repeat_world,
+            webhook_url = GSCM.Other_setting.webhook_url,
+            thumbnail_url = GSCM.Other_setting.thumbnail_url,
+            disable_webhook = GSCM.Other_setting.disable_webhook
+        },
+        Fast_plant = {
+            use_feature = true,
+            delayPath = GSCM.World_setting.delay_path,
+            delayplant = GSCM.World_setting.delay_plant,
+            vertical_size = GSCM.World_setting.vertical_size,
+            horizontal_size = GSCM.World_setting.horizontal_size,
+            coordinate_magplant = GSCM.World_setting.coordinate_magplant
+        }
+    }
+end
+
 EMPTY_MAGPLANT  = false
 CHANGE_MAGPLANT = false
 LEFT_MAG_X = CONFIG.Fast_plant.coordinate_magplant[1]
@@ -635,6 +666,11 @@ function CheckRemote()
 end
 
 function plantfast()
+    if CONFIG.Other_setting.disable_webhook == false then
+    sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
+    else
+        LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
+    end
     if CONFIG.Hand_setting.plant_type == "down" then
         count = 0
         for y= CONFIG.Fast_plant.vertical_size[2],CONFIG.Fast_plant.vertical_size[1],-2 do
