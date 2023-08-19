@@ -1,4 +1,4 @@
-local tabel_hwid = {
+tabel_hwid = {
     "nilai1",
     "nilai2",
     "nilai3"
