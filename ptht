@@ -49,8 +49,8 @@ end
 
 function checkseed()
    local Ready = 0
-   for y = 0,193 do
-       for x = 0,199 do
+   for y = CONFIG.Fast_plant.vertical_size[1] or 0,CONFIG.Fast_plant.vertical_size[2] or 193 do
+       for x = CONFIG.Fast_plant.horizontal_size[1] or 0,CONFIG.Fast_plant.horizontal_size[2] or 199 do
           if IsReady(GetTile(x,y)) then
              Ready = Ready + 1
           end
@@ -61,8 +61,8 @@ end
 
 function CheckEmptyTile()
     local m=0
-    for y = 0,193 do
-        for x = 0, 199 do
+    for y = CONFIG.Fast_plant.vertical_size[1] or 0,CONFIG.Fast_plant.vertical_size[2] or 193 do
+        for x = CONFIG.Fast_plant.horizontal_size[1] or 0,CONFIG.Fast_plant.horizontal_size[2] or 199 do
             if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable then
             m = m + 1
             end
@@ -73,8 +73,8 @@ end
 
 function gscan(Id)
     count = 0
-    for y = 0, 193 do
-        for x = 0, 199 do
+    for y = CONFIG.Fast_plant.vertical_size[1] or 0,CONFIG.Fast_plant.vertical_size[2] or 193 do
+        for x = CONFIG.Fast_plant.horizontal_size[1] or 0,CONFIG.Fast_plant.horizontal_size[2] or 199 do
             if GetTile(x,y).fg == Id and IsReady(GetTile(x,y)) then
             count = count + 1
             end
@@ -372,6 +372,105 @@ function powershell(message)
         return findItem(5640) >= 1
     end
     
+    function ht()
+        if checkseed() > 0 then
+            if CONFIG.Other_setting.disable_webhook == false then
+            sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            else
+                LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            end
+            if CONFIG.Hand_setting.harvest_type == "up" then
+                for y = 0, 193 do
+                    for x = 0, 199 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punch(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+            end
+            elseif CONFIG.Hand_setting.harvest_type == "down" then
+                for y = 193, 0, -1 do
+                    for x = 0, 199 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punch(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    function htmray()
+        if checkseed() > 0 then
+            if CONFIG.Other_setting.disable_webhook == false then
+                sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            else
+                LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            end
+            if CONFIG.Hand_setting.harvest_type == "up" then
+                for x = 0, 199 do
+                    for y = 0, 199 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punch(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+                end
+            elseif CONFIG.Hand_setting.harvest_type == "down" then
+                for x = 0, 199 do
+                    for y = 199 , 0, -1 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punch(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    function hts()
+        if checkseed() > 0 then
+            if CONFIG.Other_setting.disable_webhook == false then
+                sendwebhook("Harvesting "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            else
+                LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.Farm_setting.seed_id).." Tree Left")
+            end
+            if CONFIG.Hand_setting.harvest_type == "up" then
+                for y = 0, 193 do
+                    for x = 0, 199 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punchs(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+                end
+            elseif CONFIG.Hand_setting.harvest_type == "down" then
+                for y = 193, 0, -1 do
+                    for x = 0, 199 do
+                        if IsReady(GetTile(x,y)) then
+                            FindPath(x,y,CONFIG.delay_findPath or 100)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                            punchs(0,0)
+                            Sleep(CONFIG.Farm_setting.delay_harvest)
+                        end
+                    end
+                end
+            end
+        end
+    end
+
     function plantfast()
         if CONFIG.Other_setting.disable_webhook == false then
         sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
