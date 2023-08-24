@@ -1,37 +1,37 @@
 tabel_uid = {
-201939,
-179624,
-236519,
-15188,
-17152,
-32444,
-115797,
-287951,
-134611,
-173107,
-433566,
-53062,
+    201939,
+    179624,
+    236519,
+    15188,
+    17152,
+    32444,
+    115797,
+    287951,
+    134611,
+    173107,
+    433566,
+    53062,
 }
 
 EMPTY_MAGPLANT  = false
 CHANGE_MAGPLANT = false
-LEFT_MAG_X = CONFIG.World_setting.coordinate_magplant
+LEFT_MAG_X = CONFIG.World_setting.coordinate_magplant[1]
 
 function say(txt)
 SendPacket(2,"action|input\ntext|"..txt)
 end
 
 function IsReady(tile)
-if tile and tile.extra and tile.extra.progress and tile.extra.progress == 1.0 then
-return true
-end
-return false
+    if tile and tile.extra and tile.extra.progress and tile.extra.progress == 1.0 then
+        return true
+    end
+    return false
 end
 
 function checkseed()
     local Ready = 0
-    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] or 193 do
-        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] or 199 do
+    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] do
+        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] do
             if IsReady(GetTile(x,y)) then
                 Ready = Ready + 1
             end
@@ -42,8 +42,8 @@ end
 
 function CheckEmptyTile()
     local m=0
-    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] or 193 do
-        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] or 199 do
+    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] do
+        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] do
             if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable then
             m = m + 1
             end
@@ -54,8 +54,8 @@ end
 
 function gscan(Id)
     count = 0
-    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] or 193 do
-        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] or 199 do
+    for y = CONFIG.World_setting.vertical_size[1] or 0,CONFIG.World_setting.vertical_size[2] do
+        for x = CONFIG.World_setting.horizontal_size[1] or 0,CONFIG.World_setting.horizontal_size[2] do
             if GetTile(x,y).fg == Id and IsReady(GetTile(x,y)) then
             count = count + 1
             end
@@ -236,15 +236,10 @@ end
 
 function htmray()
     if checkseed() > 0 then
-        if CONFIG.Webhook_setting.disable_webhook == false then
-            sendwebhook("Harvesting "..gscan(CONFIG.World_setting.seed_id).." Tree Left")
-        else
-            LogToConsole("`1[GSC] `2There is "..gscan(CONFIG.World_setting.seed_id).." Tree Left")
-        end
         if CONFIG.World_setting.harvest_type == "up" then
             for y= 0, 199 do
                 for x = 0, 199 do
-                    if IsReady(GetTile(x,y)) then
+                    if GetTile(x,y).fg == CONFIG.World_setting.seed_id and IsReady(GetTile(x,y)) then
                         FindPath(x,y,CONFIG.World_setting.delay_path or 100)
                         Sleep(CONFIG.World_setting.delay_harvest)
                         punch(0,0)
@@ -253,9 +248,9 @@ function htmray()
                 end
             end
         elseif CONFIG.World_setting.harvest_type == "down" then
-            for y = 0, 199 do
-                for x = 199 , 0, -1 do
-                    if IsReady(GetTile(x,y)) then
+            for y = 199,0,-1 do
+                for x = 0, 199 do
+                    if GetTile(x,y).fg == CONFIG.World_setting.seed_id and IsReady(GetTile(x,y)) then
                         FindPath(x,y,CONFIG.World_setting.delay_path or 100)
                         Sleep(CONFIG.World_setting.delay_harvest)
                         punch(0,0)
@@ -269,63 +264,63 @@ function htmray()
 end
 
 function plantfast()
-    if CONFIG.Webhook_setting.disable_webhook == false then
-        sendwebhook("Planting "..CheckEmptyTile().." Empty Tile")
-    else
         LogToConsole("`1[GSC] `2There is "..CheckEmptyTile().." Empty Tile Left")
-    end
-    if CONFIG.World_setting.plant_type == "down" then
-        count = 0
-        for y= CONFIG.World_setting.vertical_size[2],CONFIG.World_setting.vertical_size[1],-2 do
-            if count%2 == 0 then
-                for x= CONFIG.World_setting.horizontal_size[1],CONFIG.World_setting.horizontal_size[2],10 do
-                    if EMPTY_MAGPLANT then return end
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
-                        FindPath(x,y,CONFIG.World_setting.delay_path)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.World_setting.delay_plant)
+    if CONFIG.World_setting.ptht_type == "horizontal" then
+        if CONFIG.World_setting.plant_type == "down" then
+            count = 0
+            for y= CONFIG.World_setting.vertical_size[2],CONFIG.World_setting.vertical_size[1],-2 do
+                if count%2 == 0 then
+                    for x= CONFIG.World_setting.horizontal_size[1],CONFIG.World_setting.horizontal_size[2],10 do
+                        if EMPTY_MAGPLANT then return end
+                        if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
+                            FindPath(x,y,CONFIG.World_setting.delay_path)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                            place(5640,0,0)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                        end
+                    end
+                else
+                    for x= CONFIG.World_setting.horizontal_size[2],CONFIG.World_setting.horizontal_size[1],-10 do
+                        if EMPTY_MAGPLANT then return end
+                        if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
+                            FindPath(x,y,CONFIG.World_setting.delay_path)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                            place(5640,0,0)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                        end
                     end
                 end
-            else
-                for x= CONFIG.World_setting.horizontal_size[2],CONFIG.World_setting.horizontal_size[1],-10 do
-                    if EMPTY_MAGPLANT then return end
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
-                        FindPath(x,y,CONFIG.World_setting.delay_path)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                    end
-                end
+                count = count+1
             end
-            count = count+1
-        end
-    elseif CONFIG.World_setting.plant_type == "up" then
-        count = 0
-        for y= CONFIG.World_setting.vertical_size[1],CONFIG.World_setting.vertical_size[2] do
-            if count%2 == 0 then
-                for x= CONFIG.World_setting.horizontal_size[1],CONFIG.World_setting.horizontal_size[2],10 do
-                    if EMPTY_MAGPLANT then return end
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
-                        FindPath(x,y,CONFIG.World_setting.delay_path)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.World_setting.delay_plant)
+        elseif CONFIG.World_setting.plant_type == "up" then
+            count = 0
+            for y= CONFIG.World_setting.vertical_size[1],CONFIG.World_setting.vertical_size[2] do
+                if count%2 == 0 then
+                    for x= CONFIG.World_setting.horizontal_size[1],CONFIG.World_setting.horizontal_size[2],10 do
+                        if EMPTY_MAGPLANT then return end
+                        if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
+                            FindPath(x,y,CONFIG.World_setting.delay_path)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                            place(5640,0,0)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                        end
+                    end
+                else
+                    for x= CONFIG.World_setting.horizontal_size[2],CONFIG.World_setting.horizontal_size[1],-10 do
+                        if EMPTY_MAGPLANT then return end
+                        if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
+                            FindPath(x,y,CONFIG.Fast_plant.delay_path)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                            place(5640,0,0)
+                            Sleep(CONFIG.World_setting.delay_plant)
+                        end
                     end
                 end
-            else
-                for x= CONFIG.Fast_plant.horizontal_size[2],CONFIG.Fast_plant.horizontal_size[1],-10 do
-                    if EMPTY_MAGPLANT then return end
-                    if GetTile(x,y).fg == 0 and GetTile(x,y+1).collidable and GetTile(x,y+1).fg ~= CONFIG.World_setting.seed_id then
-                        FindPath(x,y,CONFIG.Fast_plant.delay_path)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                        place(5640,0,0)
-                        Sleep(CONFIG.World_setting.delay_plant)
-                    end
-                end
+                count = count+1
             end
-            count = count+1
         end
+    else
+        say("`2Not Added")
     end
 end
 
