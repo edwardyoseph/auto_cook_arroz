@@ -399,9 +399,9 @@ if match_found == true then
     ChangeValue("[C] Modfly", true)
     say("`2UID Found")
     Sleep(3000)
-    CheckRemote()
     say("`1Script By Grow Script Community")
     Sleep(2000)
+    CheckRemote()
     cektree()
     if CONFIG.World_setting.repeat_world == true and CONFIG.Webhook_setting.disable_webhook == true then
         while true do
