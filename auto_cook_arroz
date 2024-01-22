@@ -235,7 +235,7 @@ local umur_awal = konversi_tanggal(tanggal_awal)
 function cek_waktu()
     local selisih_waktu = os.time() - umur_awal
     if selisih_waktu > 2592000 then
-        return false
+        return true
     else
         local sisa_waktu = 2592000 - selisih_waktu
         local jam = math.floor(sisa_waktu / (60 * 60))
